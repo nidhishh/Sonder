@@ -30,19 +30,19 @@ Dating apps face a category-wide retention and fatigue crisis: **78% of users re
 
 ### 1. The Core Problem & Market Reality
 *Daters spend days in low-conviction text conversations that stall or ghost.*
-![Problem & Market Snapshot](./slides/slide_01.png)
+![Problem & Market Snapshot]
 
 ---
 
 ### 2. User Research, Personas & Category Gaps
 *Benchmarking Bumble, Hinge, and Omegle against authenticity and effort.*
-![User Research & Personas](./slides/slide_02.png)
+![User Research & Personas]
 
 ---
 
 ### 3. Product Experience: End-to-End User Flow
 *From locked curiosity $\to$ AI face/lighting verification $\to$ interest-based queue $\to$ 3-min live call $\to$ instant mutual match.*
-![User Experience Flow](./slides/slide_03.png)
+![User Experience Flow]
 
 ```
 [ Homepage (Locked Live Tab) ] 
@@ -64,7 +64,7 @@ Dating apps face a category-wide retention and fatigue crisis: **78% of users re
 
 ### 4. Technical Architecture & System Design
 *Microservice topology showing matching engine, verification, RTC media relays, and platform services.*
-![System Design & Risk Analysis](./slides/slide_04.png)
+![System Design & Risk Analysis]
 
 ---
 
