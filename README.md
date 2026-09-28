@@ -1,6 +1,6 @@
 # 🧡 Sonder — Reimagining the Dating Mechanism
 
-> **A Product Teardown & Feature Proposal for Bumble / Hinge**  
+> **A Product Teardown **  
 > *Author: Nidhish Javvadi | BITS Pilani | [LinkedIn](https://linkedin.com/in/nidhish-javvadi) | [GitHub](https://github.com/nidhishh)*  
 > 📄 **[Download Complete Presentation Deck (PDF)](./Sonder.pdf)**
 
