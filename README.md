@@ -98,16 +98,10 @@ cd Sonder
 ## 📂 Repository Contents
 ```text
 .
-├── index.html              # Main interactive prototype (Phone Simulator + PM Console)
-├── styles.css              # Hybrid Level-Shifter retro theme & responsive layout
-├── app.js                  # State machine, procedural pixel sprites, audio synth & telemetry
-├── PRODUCT.md              # Product truth, personas, positioning & Zero-PII guardrails
-├── DESIGN.md               # Normative design system tokens, tonal ramps & component rules
+├── index.html              # Standalone interactive prototype (Phone Simulator + PM Console)
 ├── Sonder_v2.pdf           # Full high-resolution product case presentation deck (v2)
 ├── SONDER.pdf              # Original presentation deck
-└── .impeccable/            # Design system sidecar & verification review captures
-    ├── design.json         # Extended design system machine-readable sidecar
-    └── review/             # Verification review captures (desktop, mobile, call stage)
+└── README.md               # Executive teardown, architecture & prototype walkthrough
 ```
 
 ---

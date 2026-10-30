@@ -1,13 +1,1810 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <title>Sonder — Verified 3-Minute Live Voice Dating POC</title>
+    <title>Sonder â€” Verified 3-Minute Live Voice Dating POC</title>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
-    <link rel="stylesheet" href="styles.css">
+    <style>
+:root {
+    --bg: #ff5a36;
+    --fg: #2b0a00;
+    --acc: #ffe600;
+    --surface: #fff0d6;
+    --surface-ink: #2b0a00;
+    --surface-muted: #6e2811;
+    --stage-tint: #bd2f11;
+    --call-card: #18062c;
+    --call-border: #ffe600;
+    --coral: #ff5a36;
+    --mint: #39ff88;
+    --magenta: #ff2bd6;
+    --cyan: #2bd9ff;
+    --term-bg: #04110a;
+    --term-panel: #020a05;
+    --term-fg: #d8ffe8;
+    --term-muted: #7be0a8;
+    --term-acc: #39ff88;
+    --term-warn: #ffe600;
+    --term-danger: #ff5c8a;
+    box-sizing: border-box;
+    caret-color: var(--acc);
+    scrollbar-width: thin;
+    scrollbar-color: var(--acc) var(--fg);
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+::selection {
+    background: var(--acc);
+    color: #12060b;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--fg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--acc);
+    border: 2px solid var(--fg);
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100svh;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'VT323', 'Courier New', monospace;
+    font-size: 21px;
+    line-height: 1.35;
+    overflow-x: hidden;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
+}
+
+/* Theme Shifts by Funnel Stage */
+body[data-stage="1"],
+body[data-stage="2"] {
+    --bg: #ff5a36;
+    --fg: #2b0a00;
+    --acc: #ffe600;
+    --surface: #fff0d6;
+    --surface-ink: #2b0a00;
+    --surface-muted: #6e2811;
+    --stage-tint: #c43210;
+}
+
+body[data-stage="3"],
+body[data-stage="4"] {
+    --bg: #1a0033;
+    --fg: #ffffff;
+    --acc: #ffe600;
+    --surface: #120624;
+    --surface-ink: #fff0d6;
+    --surface-muted: #d6b8ff;
+    --stage-tint: #391063;
+}
+
+body[data-stage="5"],
+body[data-stage="6"] {
+    --bg: #2a0a12;
+    --fg: #ffe9ee;
+    --acc: #ff5c8a;
+    --surface: #fff0d6;
+    --surface-ink: #2b0a00;
+    --surface-muted: #6e2811;
+    --stage-tint: #591427;
+}
+
+/* Focus Ring & Tabular Numerals */
+:focus-visible {
+    outline: 3px dashed var(--acc);
+    outline-offset: 3px;
+}
+
+a {
+    color: inherit;
+    text-underline-offset: 4px;
+}
+
+.tabular {
+    font-variant-numeric: tabular-nums;
+}
+
+.svg-icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex-shrink: 0;
+    vertical-align: middle;
+}
+
+.svg-icon.lg {
+    width: 22px;
+    height: 22px;
+}
+
+/* Background Pixel Canvas & Outlined Ghost Title */
+#bg-sprite {
+    position: fixed;
+    left: 28%;
+    top: 52%;
+    transform: translate(-50%, -50%);
+    width: min(38vw, 460px);
+    height: min(38vw, 460px);
+    z-index: 0;
+    image-rendering: pixelated;
+    pointer-events: none;
+    opacity: 0.22;
+}
+
+.ghost-backdrop {
+    position: fixed;
+    left: 2vw;
+    top: 2vh;
+    z-index: 0;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: clamp(72px, 16vw, 210px);
+    line-height: 0.9;
+    color: transparent;
+    -webkit-text-stroke: 3px var(--fg);
+    opacity: 0.18;
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+}
+
+/* Top Global Navigation Bar */
+.top-deck {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 20px;
+    background: var(--fg);
+    color: var(--bg);
+    border-bottom: 4px solid var(--acc);
+    flex-wrap: wrap;
+}
+
+body[data-stage="3"] .top-deck,
+body[data-stage="4"] .top-deck {
+    background: #0d001c;
+    color: #fff0d6;
+}
+
+body[data-stage="5"] .top-deck,
+body[data-stage="6"] .top-deck {
+    background: #140408;
+    color: #ffe9ee;
+}
+
+.brand-cluster {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.brand-mark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--acc);
+    letter-spacing: 0.5px;
+    text-decoration: none;
+}
+
+.live-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 5px 8px;
+    background: #04110a;
+    color: #39ff88;
+    border: 2px solid #39ff88;
+}
+
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ff3b2f;
+    display: inline-block;
+    flex-shrink: 0;
+    animation: pulse-scale 1s steps(2) infinite;
+}
+
+.pulse-dot.green {
+    background: #39ff88;
+}
+
+@keyframes pulse-scale {
+    50% {
+        transform: scale(1.45);
+        opacity: 0.45;
+    }
+}
+
+.stage-stepper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.step-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 7px 9px;
+    background: transparent;
+    color: inherit;
+    border: 2px solid currentColor;
+    cursor: pointer;
+    transition: transform 0.15s ease-out, background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.step-btn:hover {
+    transform: translate(-2px, -2px);
+    background: var(--acc);
+    color: #12060b;
+    border-color: var(--acc);
+}
+
+.step-btn.active {
+    background: var(--acc);
+    color: #12060b;
+    border-color: var(--acc);
+    box-shadow: 3px 3px 0 #ffffff;
+}
+
+.top-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.arcade-btn-sm {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 7px 10px;
+    background: var(--acc);
+    color: #12060b;
+    border: 2px solid #ffffff;
+    box-shadow: 3px 3px 0 #ffffff;
+    cursor: pointer;
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.arcade-btn-sm:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #ffffff;
+}
+
+.arcade-btn-sm.outline {
+    background: transparent;
+    color: var(--acc);
+    border-color: var(--acc);
+    box-shadow: none;
+}
+
+.arcade-btn-sm.outline:hover {
+    background: var(--acc);
+    color: #12060b;
+}
+
+/* Main Split Workbench */
+.workbench {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+    max-width: 1420px;
+    margin: 0 auto;
+    padding: 14px 24px 22px;
+}
+
+/* Left Column: Narrative + Retro Phone Device */
+.phone-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.stage-banner {
+    width: 100%;
+    max-width: 620px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--surface);
+    color: var(--surface-ink);
+    border: 4px solid var(--fg);
+    box-shadow: 5px 5px 0 var(--fg);
+}
+
+.stage-banner h1 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.15;
+    margin: 0 0 2px;
+}
+
+.stage-banner p {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.2;
+    color: var(--surface-muted);
+    max-width: 65ch;
+}
+
+.token-badge {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    background: #2b0a00;
+    color: #ffe600;
+    border: 3px solid #ffe600;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    line-height: 1.45;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.15s ease-out;
+}
+
+.token-badge:hover {
+    transform: scale(1.05) rotate(-2deg);
+}
+
+/* Phone Wrapper & Floating Comic Speech Bubbles */
+.phone-rig {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 640px;
+}
+
+.speech-bub {
+    position: absolute;
+    z-index: 5;
+    background: #ff5a36;
+    color: #fff0d6;
+    border: 3px solid #2b0a00;
+    box-shadow: 4px 4px 0 #2b0a00;
+    border-radius: 14px;
+    padding: 6px 11px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    max-width: 132px;
+    line-height: 1.15;
+    animation: float-bub 3s ease-in-out infinite;
+}
+
+.speech-bub.left {
+    left: 0;
+    top: 64px;
+}
+
+.speech-bub.right {
+    right: 0;
+    bottom: 96px;
+    background: #ffe600;
+    color: #2b0a00;
+    animation-delay: 1.2s;
+}
+
+@keyframes float-bub {
+    50% {
+        transform: translateY(-6px) rotate(2deg);
+    }
+}
+
+/* The Retro Phone Frame */
+.phone-shell {
+    width: 356px;
+    min-height: 564px;
+    background: #fff0d6;
+    color: #2b0a00;
+    border: 4px solid #2b0a00;
+    border-radius: 32px;
+    box-shadow: 8px 8px 0 #2b0a00;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+    transition: background-color 0.2s ease-out, color 0.2s ease-out, border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+
+.phone-shell.dark-screen {
+    background: #140824;
+    color: #fff0d6;
+    border-color: #ffe600;
+    box-shadow: 10px 10px 0 #090014;
+}
+
+/* Phone Top Hardware Status Bar */
+.phone-statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px 10px;
+    border-bottom: 3px solid currentColor;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.phone-shell.dark-screen .phone-statusbar {
+    background: #0b0314;
+    border-bottom-color: #3f1d6b;
+}
+
+.status-left,
+.status-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Screen Viewport inside Phone */
+.phone-viewport {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 12px 14px 10px;
+    position: relative;
+}
+
+.screen-pane {
+    display: none;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.screen-pane.active {
+    display: flex;
+}
+
+.screen-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.screen-topbar h2 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 1.1;
+    margin: 0;
+}
+
+.badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 5px 7px;
+    background: #2b0a00;
+    color: #ffe600;
+    border: 2px solid #2b0a00;
+}
+
+.phone-shell.dark-screen .badge-pill {
+    background: #2b124c;
+    color: #ffe600;
+    border-color: #ffe600;
+}
+
+/* Screen 1: Locked Live Tab */
+.lock-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 8px 6px;
+    gap: 10px;
+}
+
+.pixel-frame-lg {
+    width: 84px;
+    height: 84px;
+    border: 4px solid #2b0a00;
+    border-radius: 20px;
+    background: #ff5a36;
+    box-shadow: 5px 5px 0 #2b0a00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+}
+
+.pixel-frame-lg canvas {
+    width: 60px;
+    height: 60px;
+    image-rendering: pixelated;
+}
+
+.lock-hero h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 26px;
+    margin: 2px 0 0;
+}
+
+.lock-hero p {
+    margin: 0;
+    font-size: 19px;
+    color: #5c1d0a;
+    max-width: 28ch;
+}
+
+.fomo-strip {
+    width: 100%;
+    padding: 8px 10px;
+    background: #ffe600;
+    color: #2b0a00;
+    border: 3px solid #2b0a00;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* Primary Tactile CTA Buttons */
+.retro-cta {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 19px;
+    padding: 11px 18px;
+    border-radius: 999px;
+    border: 3px solid #2b0a00;
+    background: #2b0a00;
+    color: #fff0d6;
+    box-shadow: 4px 4px 0 #ff5a36;
+    cursor: pointer;
+    transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.15s ease-out;
+}
+
+.retro-cta:hover:not(:disabled) {
+    transform: scale(1.04) rotate(-1.5deg);
+}
+
+.retro-cta:active:not(:disabled) {
+    transform: translate(3px, 3px);
+    box-shadow: 2px 2px 0 #ff5a36;
+}
+
+.retro-cta:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.retro-cta.gold {
+    background: #ffe600;
+    color: #12060b;
+    border-color: #ffffff;
+    box-shadow: 5px 5px 0 #ff5a36;
+}
+
+.retro-cta.ghost-btn {
+    background: transparent;
+    color: currentColor;
+    border-color: currentColor;
+    box-shadow: none;
+    font-size: 17px;
+    padding: 10px 16px;
+}
+
+.retro-cta.ghost-btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Screen 2: Pre-Call Bio & Lighting Scan */
+.cam-box {
+    position: relative;
+    width: 100%;
+    height: 188px;
+    background: #1a0033;
+    border: 4px solid #2b0a00;
+    border-radius: 20px;
+    box-shadow: 5px 5px 0 #2b0a00;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.cam-box canvas {
+    width: 124px;
+    height: 124px;
+    image-rendering: pixelated;
+    border: 3px solid #ffe600;
+    border-radius: 12px;
+}
+
+.scan-laser {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #39ff88;
+    box-shadow: 0 0 10px #39ff88;
+    animation: laser-sweep 1.8s ease-in-out infinite;
+}
+
+@keyframes laser-sweep {
+    0%, 100% {
+        top: 14%;
+    }
+    50% {
+        top: 86%;
+    }
+}
+
+.cam-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.check-list {
+    list-style: none;
+    margin: 0;
+    padding: 12px 14px;
+    background: #ffffff;
+    border: 3px solid #2b0a00;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 19px;
+    color: #5c1d0a;
+}
+
+.check-item.done {
+    color: #2b0a00;
+    font-weight: 700;
+}
+
+.check-icon {
+    width: 22px;
+    height: 22px;
+    border: 2px solid #2b0a00;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+    background: #fff0d6;
+    color: #2b0a00;
+    flex-shrink: 0;
+}
+
+.check-item.done .check-icon {
+    background: #39ff88;
+    color: #04110a;
+}
+
+.privacy-note {
+    font-size: 16px;
+    color: #5c1d0a;
+    background: #ffe600;
+    border: 2px solid #2b0a00;
+    padding: 6px 10px;
+    border-radius: 10px;
+}
+
+/* Screen 3: Fair Queue & Interest Chips */
+.queue-radar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    padding: 10px 6px;
+}
+
+.radar-ring {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    border: 3px solid #ffe600;
+    background: #230b42;
+    box-shadow: 0 0 0 6px rgba(255, 230, 0, 0.16);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: radar-pulse 1.5s ease-out infinite;
+}
+
+@keyframes radar-pulse {
+    50% {
+        box-shadow: 0 0 0 14px rgba(255, 230, 0, 0.04);
+        transform: scale(1.04);
+    }
+}
+
+.radar-ring canvas {
+    width: 52px;
+    height: 52px;
+    image-rendering: pixelated;
+}
+
+.wait-readout {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 13px;
+    color: #ffe600;
+    margin-top: 4px;
+}
+
+.chip-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 4px 0;
+}
+
+.filter-chip {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 6px 13px;
+    border-radius: 999px;
+    border: 2px solid #fff0d6;
+    background: #280e4a;
+    color: #fff0d6;
+    cursor: pointer;
+    transition: transform 0.15s ease-out, background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.filter-chip:nth-child(odd) {
+    transform: rotate(-2deg);
+}
+
+.filter-chip:nth-child(even) {
+    transform: rotate(2deg);
+}
+
+.filter-chip.active {
+    background: #ffe600;
+    color: #12060b;
+    border-color: #ffe600;
+}
+
+.queue-alert {
+    padding: 10px 12px;
+    background: #2b0a00;
+    border: 2px solid #ff5a36;
+    border-radius: 12px;
+    color: #fff0d6;
+    font-size: 17px;
+    display: none;
+}
+
+.queue-alert.visible {
+    display: block;
+}
+
+/* Screen 4: 3-Minute Split Voice Call */
+.call-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    background: #0b0314;
+    border: 2px solid #3f1d6b;
+    border-radius: 12px;
+}
+
+.call-timer-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 13px;
+    color: #ffe600;
+}
+
+.flag-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 5px 8px;
+    background: transparent;
+    color: #ff5c8a;
+    border: 2px solid #ff5c8a;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.flag-btn:hover {
+    background: #ff5c8a;
+    color: #12060b;
+}
+
+.split-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.caller-pane {
+    background: #210c3d;
+    border: 3px solid #ffe600;
+    border-radius: 16px;
+    padding: 9px 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.caller-pane.self {
+    background: #1a0930;
+    border-color: #d6b8ff;
+}
+
+.caller-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.pixel-avatar {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+    border: 3px solid #ffe600;
+    border-radius: 12px;
+    background: #120624;
+    flex-shrink: 0;
+    animation: avatar-bob 1.2s ease-in-out infinite;
+}
+
+.pixel-avatar.self {
+    border-color: #39ff88;
+    animation-delay: 0.4s;
+}
+
+@keyframes avatar-bob {
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+.caller-meta h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    margin: 0 0 1px;
+    color: #fff0d6;
+}
+
+.caller-meta p {
+    margin: 0;
+    font-size: 16px;
+    color: #d6b8ff;
+}
+
+.voice-line {
+    font-size: 17px;
+    color: #ffe600;
+    background: #120624;
+    border: 2px solid #3f1d6b;
+    border-radius: 8px;
+    padding: 5px 8px;
+}
+
+/* Heartbeat / Voice Waveform SVG */
+.hb-wave {
+    width: 100%;
+    height: 22px;
+    display: block;
+}
+
+.hb-wave polyline {
+    fill: none;
+    stroke: #ff5a36;
+    stroke-width: 3;
+    stroke-dasharray: 200;
+    animation: wave-scroll 1.5s linear infinite;
+}
+
+@keyframes wave-scroll {
+    to {
+        stroke-dashoffset: -400;
+    }
+}
+
+/* Icebreaker Prompt Box */
+.icebreaker-box {
+    position: relative;
+    background: #2b0a00;
+    color: #fff0d6;
+    border: 3px solid #ff5a36;
+    border-radius: 14px;
+    padding: 8px 10px;
+}
+
+.ice-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.ice-label {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: #ff5a36;
+}
+
+.ice-shuffle {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    background: #ff5a36;
+    color: #2b0a00;
+    border: 0;
+    border-radius: 999px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ice-shuffle:hover {
+    transform: scale(1.1) rotate(-3deg);
+}
+
+.ice-question {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.2;
+    margin: 0;
+}
+
+/* Call Control Bar */
+.call-controls {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
+}
+
+.ctrl-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 7px 4px;
+    border-radius: 12px;
+    border: 2px solid #fff0d6;
+    background: #230b42;
+    color: #fff0d6;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.15s ease-out;
+}
+
+.ctrl-btn:hover {
+    transform: scale(1.06) rotate(-2deg);
+}
+
+.ctrl-btn.heart-btn.active {
+    background: #ff5a36;
+    color: #fff0d6;
+    border-color: #ffe600;
+    box-shadow: 0 0 12px rgba(255, 90, 54, 0.6);
+}
+
+.ctrl-btn.extend-btn.active {
+    background: #ffe600;
+    color: #12060b;
+    border-color: #ffffff;
+}
+
+.ctrl-btn.end-btn {
+    background: #4a0e1e;
+    border-color: #ff5c8a;
+    color: #ffe9ee;
+}
+
+.call-status-strip {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    line-height: 1.5;
+    text-align: center;
+    color: #ffe600;
+    min-height: 24px;
+}
+
+/* Screen 5: Match / Wrap */
+.match-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    padding: 14px 8px;
+}
+
+.match-hero canvas {
+    width: 112px;
+    height: 112px;
+    image-rendering: pixelated;
+    border: 4px solid #ffe600;
+    border-radius: 24px;
+    background: #230b42;
+    padding: 10px;
+}
+
+.match-hero h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 30px;
+    margin: 0;
+    color: #ffe600;
+}
+
+.match-hero p {
+    margin: 0;
+    font-size: 20px;
+    color: #fff0d6;
+}
+
+.match-summary {
+    width: 100%;
+    padding: 12px;
+    background: #230b42;
+    border: 2px solid #ffe600;
+    border-radius: 14px;
+    font-size: 18px;
+    text-align: left;
+}
+
+/* Screen 6: Unlocked Chat & Vibe Rating */
+.rating-strip {
+    padding: 10px;
+    background: #fff0d6;
+    color: #2b0a00;
+    border: 3px solid #2b0a00;
+    border-radius: 14px;
+}
+
+.rating-strip p {
+    margin: 0 0 6px;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+}
+
+.rating-btns {
+    display: flex;
+    gap: 6px;
+}
+
+.rate-chip {
+    flex: 1;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 6px 8px;
+    border: 2px solid #2b0a00;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #2b0a00;
+    cursor: pointer;
+}
+
+.rate-chip.active {
+    background: #39ff88;
+    color: #04110a;
+}
+
+.chat-log {
+    flex: 1;
+    min-height: 210px;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #1c0836;
+    border: 3px solid #ffe600;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chat-msg {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 14px;
+    font-size: 18px;
+    line-height: 1.25;
+}
+
+.chat-msg.them {
+    align-self: flex-start;
+    background: #fff0d6;
+    color: #2b0a00;
+    border: 2px solid #2b0a00;
+}
+
+.chat-msg.you {
+    align-self: flex-end;
+    background: #ff5a36;
+    color: #fff0d6;
+    border: 2px solid #ffe600;
+}
+
+.quick-replies {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.quick-reply-btn {
+    font-family: 'VT323', monospace;
+    font-size: 17px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 2px solid #ffe600;
+    background: #230b42;
+    color: #ffe600;
+    cursor: pointer;
+}
+
+.quick-reply-btn:hover {
+    background: #ffe600;
+    color: #12060b;
+}
+
+.chat-input-row {
+    display: flex;
+    gap: 8px;
+}
+
+.chat-input {
+    flex: 1;
+    font-family: 'VT323', monospace;
+    font-size: 19px;
+    padding: 8px 12px;
+    border-radius: 12px;
+    border: 3px solid #ffe600;
+    background: #0b0314;
+    color: #fff0d6;
+}
+
+/* Phone Bottom Navigation Bar */
+.phone-bottomnav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    padding: 10px 12px 14px;
+    border-top: 3px solid currentColor;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.phone-shell.dark-screen .phone-bottomnav {
+    background: #0b0314;
+    border-top-color: #3f1d6b;
+}
+
+.nav-tab {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    opacity: 0.6;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    cursor: pointer;
+}
+
+.nav-tab.active {
+    opacity: 1;
+    color: #ff5a36;
+}
+
+.phone-shell.dark-screen .nav-tab.active {
+    color: #ffe600;
+}
+
+/* Right Column: PM Director's Console (ArchitectOS Phosphor Terminal Style) */
+.director-console {
+    background: var(--term-panel);
+    color: var(--term-fg);
+    border: 2px solid var(--term-acc);
+    box-shadow: 10px 10px 0 rgba(57, 255, 136, 0.28);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.5;
+    position: relative;
+}
+
+.console-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--term-acc);
+    background: #04150c;
+    color: var(--term-acc);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+}
+
+.win-dots {
+    display: flex;
+    gap: 6px;
+}
+
+.win-dots i {
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--term-acc);
+    display: inline-block;
+}
+
+.console-section {
+    position: relative;
+    z-index: 1;
+    padding: 16px 18px;
+    border-bottom: 1px solid rgba(57, 255, 136, 0.35);
+}
+
+.console-section:last-child {
+    border-bottom: 0;
+}
+
+.console-section h2 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--term-acc);
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.console-section h2::before {
+    content: '> ';
+}
+
+.cmd-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.cmd-grid.three {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.term-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-align: left;
+    padding: 9px 11px;
+    background: #04110a;
+    color: var(--term-fg);
+    border: 1px solid var(--term-acc);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    transition: background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.term-btn:hover {
+    background: var(--term-acc);
+    color: #020a05;
+}
+
+.term-btn.active {
+    background: var(--term-acc);
+    color: #020a05;
+    font-weight: 700;
+}
+
+.term-btn.warn {
+    border-color: var(--term-warn);
+    color: var(--term-warn);
+}
+
+.term-btn.warn:hover,
+.term-btn.warn.active {
+    background: var(--term-warn);
+    color: #020a05;
+}
+
+.term-btn.danger {
+    border-color: var(--term-danger);
+    color: var(--term-danger);
+}
+
+.term-btn.danger:hover {
+    background: var(--term-danger);
+    color: #020a05;
+}
+
+/* North Star & Guardrail Telemetry */
+.ns-formula {
+    display: grid;
+    grid-template-columns: 1.2fr repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.ns-cell {
+    padding: 8px 10px;
+    border: 1px solid rgba(57, 255, 136, 0.5);
+    background: #04110a;
+}
+
+.ns-cell.primary {
+    border-color: #ffe600;
+    background: #141200;
+}
+
+.ns-val {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 15px;
+    color: var(--term-acc);
+    display: block;
+    margin-bottom: 4px;
+}
+
+.ns-cell.primary .ns-val {
+    color: #ffe600;
+}
+
+.ns-lbl {
+    font-size: 11px;
+    color: var(--term-muted);
+    display: block;
+}
+
+.guardrail-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.gr-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    background: #04110a;
+    border: 1px solid rgba(216, 255, 232, 0.25);
+    font-size: 12px;
+}
+
+.gr-val {
+    color: var(--term-acc);
+    font-weight: 700;
+}
+
+/* Event Stream Log */
+.event-log {
+    height: 148px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #010603;
+    border: 1px solid var(--term-acc);
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.log-entry {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    color: var(--term-fg);
+    border-bottom: 1px dashed rgba(57, 255, 136, 0.2);
+    padding-bottom: 4px;
+    word-break: break-word;
+}
+
+.log-time {
+    color: var(--term-muted);
+    flex-shrink: 0;
+}
+
+.log-name {
+    color: #ffe600;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+/* Non-Blocking In-Flow Arcade Control Dock */
+.arcade-dock {
+    position: relative;
+    z-index: 2;
+    max-width: 1420px;
+    margin: 0 auto 20px;
+    padding: 0 24px;
+}
+
+.dock-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    background: var(--fg);
+    color: var(--surface);
+    border: 3px solid var(--acc);
+    box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.35);
+}
+
+body[data-stage="3"] .dock-inner,
+body[data-stage="4"] .dock-inner {
+    background: #0d001c;
+    color: #fff0d6;
+}
+
+body[data-stage="5"] .dock-inner,
+body[data-stage="6"] .dock-inner {
+    background: #140408;
+    color: #ffe9ee;
+}
+
+.dock-shortcuts {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.dock-title {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    color: var(--acc);
+    margin-right: 4px;
+}
+
+.kbd-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 9px;
+    background: rgba(255, 255, 255, 0.08);
+    color: inherit;
+    border: 1px solid rgba(255, 230, 0, 0.55);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    cursor: pointer;
+    transition: transform 0.15s ease-out, background-color 0.15s ease-out, color 0.15s ease-out;
+}
+
+.kbd-chip:hover {
+    transform: translateY(-2px);
+    background: var(--acc);
+    color: #12060b;
+    border-color: var(--acc);
+}
+
+.kbd-chip kbd {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 3px 5px;
+    background: var(--acc);
+    color: #12060b;
+    border-radius: 4px;
+}
+
+.kbd-chip:hover kbd {
+    background: #12060b;
+    color: var(--acc);
+}
+
+.dock-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.dock-guardrail {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--acc);
+}
+
+.dock-link {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 7px 10px;
+    background: var(--acc);
+    color: #12060b;
+    border: 2px solid #ffffff;
+    text-decoration: none;
+    transition: transform 0.15s ease-out;
+}
+
+.dock-link:hover {
+    transform: translate(2px, 2px);
+}
+
+/* Pause-Menu Dialog Modals (Portfolio .ogb Pattern) */
+dialog.retro-dialog {
+    width: min(580px, calc(100vw - 32px));
+    max-height: 86vh;
+    overflow-y: auto;
+    margin: auto;
+    background: #1a0033;
+    color: #fff0d6;
+    border: 4px solid #ffe600;
+    box-shadow: 8px 8px 0 #ff5a36;
+    padding: 0 22px 22px;
+    font-family: 'VT323', monospace;
+    font-size: 21px;
+}
+
+dialog.retro-dialog::backdrop {
+    background: rgba(4, 17, 10, 0.78);
+}
+
+.dialog-bar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 -22px 18px;
+    padding: 12px 22px;
+    background: #ffe600;
+    color: #12060b;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 10px;
+}
+
+.dialog-close {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 11px;
+    background: transparent;
+    color: #12060b;
+    border: 2px solid #12060b;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.tier-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 14px;
+}
+
+.tier-box {
+    padding: 14px;
+    background: #280e4a;
+    border: 3px solid #fff0d6;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.tier-box.featured {
+    border-color: #ffe600;
+    box-shadow: 4px 4px 0 #ff5a36;
+}
+
+.tier-box h3 {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 22px;
+    color: #ffe600;
+    margin: 0;
+}
+
+.tier-box ul {
+    margin: 0;
+    padding-left: 18px;
+    font-size: 18px;
+}
+
+@media (max-width: 1180px) {
+    .speech-bub {
+        display: none;
+    }
+}
+
+@media (max-width: 1024px) {
+    .workbench {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .phone-rig {
+        padding: 4px 0;
+    }
+}
+
+@media (max-width: 640px) {
+    html,
+    body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
+    .top-deck {
+        padding: 8px 10px;
+        gap: 6px;
+        width: 100%;
+    }
+
+    .brand-cluster {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .live-pill {
+        font-size: 7px;
+        white-space: normal;
+        line-height: 1.4;
+        max-width: 100%;
+    }
+
+    .step-btn {
+        font-size: 7px;
+        padding: 6px 7px;
+    }
+
+    .workbench {
+        padding: 10px 10px 18px;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .arcade-dock {
+        padding: 0 10px;
+        margin-bottom: 14px;
+    }
+
+    .phone-stage,
+    .director-console,
+    .phone-rig,
+    .stage-banner {
+        width: 100%;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .console-titlebar {
+        flex-wrap: wrap;
+        gap: 6px;
+        font-size: 8px;
+        padding: 8px 10px;
+    }
+
+    .console-section {
+        padding: 12px;
+    }
+
+    .console-section h2 {
+        font-size: 13px;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .stage-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 12px;
+        box-shadow: 4px 4px 0 var(--fg);
+    }
+
+    .stage-banner h1 {
+        font-size: 20px;
+    }
+
+    .phone-shell {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        box-shadow: 5px 5px 0 #2b0a00;
+    }
+
+    .phone-statusbar {
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 10px 12px 8px;
+        font-size: 7px;
+    }
+
+    .cmd-grid,
+    .cmd-grid.three,
+    .ns-formula,
+    .guardrail-list,
+    .tier-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pixel-avatar,
+    .speech-bub,
+    .scan-laser,
+    .radar-ring,
+    .hb-wave polyline {
+        animation: none;
+    }
+}
+
+</style>
 </head>
 
 <body data-stage="1">
@@ -71,7 +1868,7 @@
             </a>
             <span class="live-pill tabular">
                 <span class="pulse-dot green"></span>
-                <span id="live-window-pill">BLR LIVE HOUR · 9–11 PM · 312 ONLINE</span>
+                <span id="live-window-pill">BLR LIVE HOUR Â· 9â€“11 PM Â· 312 ONLINE</span>
             </span>
         </div>
 
@@ -88,7 +1885,7 @@
             <button type="button" class="arcade-btn-sm outline" id="btn-open-case">CASE BRIEF</button>
             <button type="button" class="arcade-btn-sm" id="btn-open-pricing">
                 <svg class="svg-icon" aria-hidden="true"><use href="#ic-coin"></use></svg>
-                <span id="top-tier-label" class="tabular">FREE · 3/3 CALLS</span>
+                <span id="top-tier-label" class="tabular">FREE Â· 3/3 CALLS</span>
             </button>
         </div>
     </header>
@@ -118,7 +1915,7 @@
                     <div class="phone-statusbar tabular">
                         <div class="status-left">
                             <span class="pulse-dot green"></span>
-                            <span id="phone-persona-label">ANANYA · 26 · BLR</span>
+                            <span id="phone-persona-label">ANANYA Â· 26 Â· BLR</span>
                         </div>
                         <div class="status-right">
                             <span id="phone-verify-badge">ID + SELFIE</span>
@@ -133,7 +1930,7 @@
                         <article class="screen-pane active" id="screen-1" aria-label="Screen 1: Locked Live Tab">
                             <div class="screen-topbar">
                                 <h2>Discover</h2>
-                                <span class="badge-pill">THU–SUN · 9–11 PM</span>
+                                <span class="badge-pill">THUâ€“SUN Â· 9â€“11 PM</span>
                             </div>
 
                             <div class="lock-hero">
@@ -143,7 +1940,7 @@
                                 <h3>Live is locked</h3>
                                 <p>Verify your ID to hear someone for 3 minutes before you match. No swipe feed, no bots.</p>
                                 <div class="fomo-strip tabular" id="fomo-strip-text">
-                                    BENGALURU LIVE HOUR ACTIVE · 312 VERIFIED CALLERS · MEDIAN WAIT 18s (WOMEN PRIORITY)
+                                    BENGALURU LIVE HOUR ACTIVE Â· 312 VERIFIED CALLERS Â· MEDIAN WAIT 18s (WOMEN PRIORITY)
                                 </div>
                             </div>
 
@@ -188,7 +1985,7 @@
                             </ul>
 
                             <button type="button" class="retro-cta" id="btn-enter-queue">
-                                <span>Join 9–11 PM Queue</span>
+                                <span>Join 9â€“11 PM Queue</span>
                             </button>
                         </article>
 
@@ -211,7 +2008,7 @@
 
                             <div>
                                 <div class="chip-cloud" id="interest-chips" role="group" aria-label="Shared interest filters">
-                                    <button type="button" class="filter-chip active" data-chip="Age 24–30">Age 24–30</button>
+                                    <button type="button" class="filter-chip active" data-chip="Age 24â€“30">Age 24â€“30</button>
                                     <button type="button" class="filter-chip active" data-chip="Within 10 km">Within 10 km</button>
                                     <button type="button" class="filter-chip active" data-chip="Travel">Travel</button>
                                     <button type="button" class="filter-chip active" data-chip="Music">Music</button>
@@ -252,14 +2049,14 @@
                                     <div class="caller-row">
                                         <canvas class="pixel-avatar" id="peer-avatar" width="8" height="8" aria-label="Caller pixel avatar"></canvas>
                                         <div class="caller-meta">
-                                            <h3 id="peer-name">Kabir, 28 · Bengaluru</h3>
-                                            <p id="peer-shared">Verified ID · Indiranagar · Travel, Music</p>
+                                            <h3 id="peer-name">Kabir, 28 Â· Bengaluru</h3>
+                                            <p id="peer-shared">Verified ID Â· Indiranagar Â· Travel, Music</p>
                                         </div>
                                     </div>
                                     <svg class="hb-wave" viewBox="0 0 200 32" aria-hidden="true">
                                         <polyline id="wave-line" points="0,16 32,16 42,4 52,28 62,16 98,16 108,6 118,26 128,16 162,16 170,8 178,24 186,16 200,16"></polyline>
                                     </svg>
-                                    <div class="voice-line" id="peer-voice-line">"Wait, pineapple on biryani is a crime—tell me your real take!"</div>
+                                    <div class="voice-line" id="peer-voice-line">"Wait, pineapple on biryani is a crimeâ€”tell me your real take!"</div>
                                 </div>
 
                                 <!-- Middle Bridge: Icebreaker Box -->
@@ -280,7 +2077,7 @@
                                         <canvas class="pixel-avatar self" id="self-avatar" width="8" height="8" aria-label="Your pixel avatar"></canvas>
                                         <div class="caller-meta">
                                             <h3 id="self-call-name">You (Ananya, 26)</h3>
-                                            <p id="self-mic-status">Mic live · One-sided hearts stay invisible</p>
+                                            <p id="self-mic-status">Mic live Â· One-sided hearts stay invisible</p>
                                         </div>
                                     </div>
 
@@ -320,10 +2117,10 @@
                             <div class="match-hero">
                                 <canvas id="match-canvas" width="16" height="16" aria-label="Match outcome pixel canvas"></canvas>
                                 <h3 id="match-headline">It's a match</h3>
-                                <p id="match-subcopy">You both tapped the heart — call ended, chat's open.</p>
+                                <p id="match-subcopy">You both tapped the heart â€” call ended, chat's open.</p>
                                 <div class="match-summary" id="match-summary-box">
-                                    <strong>Matched with Kabir, 28 · Bengaluru</strong><br>
-                                    <span>3m 00s verified call · Bonded over: "Most unpopular food opinion?"</span>
+                                    <strong>Matched with Kabir, 28 Â· Bengaluru</strong><br>
+                                    <span>3m 00s verified call Â· Bonded over: "Most unpopular food opinion?"</span>
                                 </div>
                             </div>
 
@@ -346,7 +2143,7 @@
                             </div>
 
                             <div class="rating-strip">
-                                <p>STEP 6 · RATE THE CALL (TRAINS MATCHING ENGINE)</p>
+                                <p>STEP 6 Â· RATE THE CALL (TRAINS MATCHING ENGINE)</p>
                                 <div class="rating-btns">
                                     <button type="button" class="rate-chip active" data-rate="Great Vibe">Great Vibe</button>
                                     <button type="button" class="rate-chip" data-rate="Good Talk">Good Talk</button>
@@ -416,25 +2213,25 @@
                 <h2>Persona &amp; Supply Constraint (Slide 3)</h2>
                 <div class="cmd-grid" style="margin-bottom:8px">
                     <button type="button" class="term-btn active" id="btn-persona-ananya">
-                        <span>ANANYA, 26 · BLR</span>
+                        <span>ANANYA, 26 Â· BLR</span>
                         <span>Priority &lt;25s</span>
                     </button>
                     <button type="button" class="term-btn" id="btn-persona-rohan">
-                        <span>ROHAN, 27 · MUM</span>
+                        <span>ROHAN, 27 Â· MUM</span>
                         <span>Wait ~40s</span>
                     </button>
                 </div>
                 <div class="cmd-grid three">
                     <button type="button" class="term-btn active" data-tier="free">
-                        <span>Free ₹0</span>
+                        <span>Free â‚¹0</span>
                         <span>3/hr</span>
                     </button>
                     <button type="button" class="term-btn" data-tier="plus">
-                        <span>Plus ₹499</span>
+                        <span>Plus â‚¹499</span>
                         <span>Unlim</span>
                     </button>
                     <button type="button" class="term-btn" data-tier="priority">
-                        <span>Priority ₹799</span>
+                        <span>Priority â‚¹799</span>
                         <span>FastQ</span>
                     </button>
                 </div>
@@ -532,7 +2329,7 @@
             <div class="dock-shortcuts" role="group" aria-label="Keyboard shortcuts">
                 <span class="dock-title">CONTROLS</span>
                 <button type="button" class="kbd-chip" data-shortcut="stage" title="Press 1-6 to jump stages">
-                    <kbd>1–6</kbd><span>Stages</span>
+                    <kbd>1â€“6</kbd><span>Stages</span>
                 </button>
                 <button type="button" class="kbd-chip" data-shortcut="heart" title="Press H to toggle Vibe heart">
                     <kbd>H</kbd><span>Vibe Heart</span>
@@ -549,7 +2346,7 @@
             </div>
 
             <div class="dock-meta">
-                <span class="dock-guardrail">ZERO-PII SYNTHETIC DEMO · DPDP ACT 2023 GUARDRAILS</span>
+                <span class="dock-guardrail">ZERO-PII SYNTHETIC DEMO Â· DPDP ACT 2023 GUARDRAILS</span>
                 <a href="https://github.com/nidhishh/Sonder/blob/main/Sonder_v2.pdf" target="_blank" rel="noopener" class="dock-link">
                     <span>READ SONDER_V2.PDF</span>
                 </a>
@@ -564,11 +2361,11 @@
             <button type="button" class="dialog-close" data-close-dialog="dialog-pricing">X</button>
         </div>
         <h2 style="font-family:'Fredoka',sans-serif;margin:0 0 8px;color:#ffe600">We sell a call in minutes, not more likes.</h2>
-        <p style="margin:0">Priced below Hinge+ (₹1,199/mo) because discovery happens on the call itself.</p>
+        <p style="margin:0">Priced below Hinge+ (â‚¹1,199/mo) because discovery happens on the call itself.</p>
         <div class="tier-grid">
             <div class="tier-box">
                 <div>
-                    <h3>Free · ₹0</h3>
+                    <h3>Free Â· â‚¹0</h3>
                     <ul>
                         <li>3 calls / Live Hour</li>
                         <li>100% ID + selfie verified</li>
@@ -579,7 +2376,7 @@
             </div>
             <div class="tier-box featured">
                 <div>
-                    <h3>Plus · ₹499/mo</h3>
+                    <h3>Plus Â· â‚¹499/mo</h3>
                     <ul>
                         <li>Unlimited Live Hour calls</li>
                         <li>+3 min mutual call extend</li>
@@ -590,7 +2387,7 @@
             </div>
             <div class="tier-box">
                 <div>
-                    <h3>Priority · ₹799/mo</h3>
+                    <h3>Priority Â· â‚¹799/mo</h3>
                     <ul>
                         <li>Priority queue (&lt;18s wait)</li>
                         <li>See who tapped heart</li>
@@ -609,9 +2406,9 @@
             <button type="button" class="dialog-close" data-close-dialog="dialog-case">X</button>
         </div>
         <h2 style="font-family:'Fredoka',sans-serif;margin:0 0 10px;color:#ffe600">Matches felt good. Texting for 5 days felt broken.</h2>
-        <p><strong>The Root Cause (5 Whys):</strong> 75% of Indian daters see fake/AI profiles, forcing ~5 days of cautious text screening where tone, humour, and timing vanish—so 2 in 3 never meet in person.</p>
+        <p><strong>The Root Cause (5 Whys):</strong> 75% of Indian daters see fake/AI profiles, forcing ~5 days of cautious text screening where tone, humour, and timing vanishâ€”so 2 in 3 never meet in person.</p>
         <p><strong>Why Incumbents Won't Copy It:</strong> Tinder, Bumble, and Hinge monetize time in the swipe feed. Putting a 3-minute voice call <em>before</em> the match shrinks feed time, cannibalizing their core paywall.</p>
-        <p><strong>Bengaluru Beachhead Math:</strong> 2,000 verified callers concentrated into Thu–Sun 9–11 PM Live Hours = ~300 concurrent callers = ~30 compatible matches within 10 km = median wait under 40 seconds.</p>
+        <p><strong>Bengaluru Beachhead Math:</strong> 2,000 verified callers concentrated into Thuâ€“Sun 9â€“11 PM Live Hours = ~300 concurrent callers = ~30 compatible matches within 10 km = median wait under 40 seconds.</p>
         <p><strong>Privacy &amp; DPDP Act 2023 Guardrail:</strong> No raw call audio recording and zero sensitive PII ingestion in this prototype.</p>
     </dialog>
 
@@ -630,7 +2427,1121 @@
         </div>
     </dialog>
 
-    <script src="app.js"></script>
+    <script>
+(function () {
+    'use strict';
+
+    /* ==========================================================================
+       1. APPLICATION STATE & PRODUCT DATA (FROM SONDER_V2.PDF)
+       ========================================================================== */
+    var state = {
+        stage: 1,
+        persona: 'ananya', // 'ananya' | 'rohan'
+        tier: 'free',      // 'free' | 'plus' | 'priority'
+        tokens: 3,
+        audioOn: true,
+        partnerWillHeart: true,
+        userHearted: false,
+        userExtended: false,
+        partnerExtended: false,
+        muted: false,
+        callSecondsLeft: 180,
+        callSecondsElapsed: 0,
+        callInterval: null,
+        queueWaitSec: 18,
+        webcamActive: false,
+        webcamStream: null,
+        webcamVideo: null,
+        lastOutcome: 'mutual', // 'mutual' | 'onesided' | 'early_hangup' | 'reported'
+        icebreakerIndex: 0,
+        metrics: {
+            callsPerWeek: 6.0,
+            completionPct: 60,
+            mutualRatePct: 40,
+            womenWaitSec: 18,
+            reportsPer1k: 1.2
+        }
+    };
+
+    var PERSONAS = {
+        ananya: {
+            label: 'ANANYA Â· 26 Â· BLR',
+            selfCallTitle: 'You (Ananya, 26)',
+            waitSec: 18,
+            queueRank: '#1 PRIORITY',
+            fomoText: 'BENGALURU LIVE HOUR Â· 312 CALLERS Â· WOMEN PRIORITY WAIT: 18s',
+            selfColor: '#39ff88',
+            peerName: 'Kabir, 28 Â· Bengaluru',
+            peerShort: 'Kabir, 28',
+            peerShared: 'Verified ID Â· Indiranagar Â· Travel, Music',
+            peerColor: '#ff5a36',
+            bubLeft: 'zero fake profiles!',
+            bubRight: '18s priority queue'
+        },
+        rohan: {
+            label: 'ROHAN Â· 27 Â· MUM',
+            selfCallTitle: 'You (Rohan, 27)',
+            waitSec: 38,
+            queueRank: '#4 IN QUEUE',
+            fomoText: 'BENGALURU LIVE HOUR Â· 312 CALLERS Â· EST. QUEUE WAIT: 38s',
+            selfColor: '#2bd9ff',
+            peerName: 'Priya, 26 Â· Bengaluru',
+            peerShort: 'Priya, 26',
+            peerShared: 'Verified ID Â· Koramangala Â· Travel, Music',
+            peerColor: '#ff2bd6',
+            bubLeft: 'be heard in 3 min!',
+            bubRight: 'no dead openers'
+        }
+    };
+
+    var STAGE_COPY = {
+        1: {
+            headline: 'Hear the vibe before a week of texting.',
+            subcopy: 'Screen 1 of 5 (MVP): Curiosity lock badge builds FOMO before the Live tab opens; zero unverified browsing.',
+            darkPhone: false
+        },
+        2: {
+            headline: 'Trust before talk: AI face & lighting scan.',
+            subcopy: 'Screen 2 of 5 (MVP): Quiet pre-call liveness & lighting check verifies every caller before entering the queue.',
+            darkPhone: false
+        },
+        3: {
+            headline: 'Make the wait fair: shared-interest queue.',
+            subcopy: 'Screen 3 of 5 (MVP): Concentrated 9â€“11 PM Live Hours keep median wait under 40s with transparent queue position.',
+            darkPhone: true
+        },
+        4: {
+            headline: 'Keep stakes low: 3-minute voice-first call.',
+            subcopy: 'Screen 4 of 5 (MVP): Omegle-style split screen, rotating icebreaker prompt, and mutual +3m extension.',
+            darkPhone: true
+        },
+        5: {
+            headline: 'No swipe screen: mutual heart unlocks chat.',
+            subcopy: 'Screen 5 of 5 (MVP): Both tapped heart opens chat immediately; one-sided hearts stay 100% invisible.',
+            darkPhone: true
+        },
+        6: {
+            headline: 'Plan the first date & train the match engine.',
+            subcopy: 'Step 5 & 6 of Core Loop: Unlocked chat seeded with your call icebreaker + 1-tap post-call chemistry rating.',
+            darkPhone: true
+        }
+    };
+
+    var ICEBREAKERS = [
+        {
+            q: 'Most unpopular food opinion?',
+            reply: '"Wait, pineapple on biryani is a crimeâ€”tell me your real take!"'
+        },
+        {
+            q: 'Two truths and a lie. Go.',
+            reply: '"Okay: I once missed a flight for dosa, I hate monsoon traffic, and I can parallel park."'
+        },
+        {
+            q: 'Pitch your ideal Sunday in Bengaluru in 10 seconds.',
+            reply: '"Morning run at Cubbon Park, filter coffee in Indiranagar, and zero work emails."'
+        },
+        {
+            q: 'What is a green flag you notice in the first 60 seconds?',
+            reply: '"When someone laughs at their own terrible joke without holding back."'
+        },
+        {
+            q: 'Worst first-date story, unfiltered.',
+            reply: '"He brought a spreadsheet of 5-year career goals to a coffee date. Never again!"'
+        },
+        {
+            q: 'Which song is stuck in your head right now?',
+            reply: '"Late-night indie Hindi playlist on repeat since 9 PM."'
+        }
+    ];
+
+    /* ==========================================================================
+       2. RETRO WEBAUDIO SYNTHESIZER (8-BIT CHIPTUNE BLEEPS)
+       ========================================================================== */
+    var audioCtx = null;
+
+    function playSound(type) {
+        if (!state.audioOn) return;
+        try {
+            if (!audioCtx) {
+                var AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                audioCtx = new AudioContextClass();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            var now = audioCtx.currentTime;
+            var notes = {
+                click: [[520, 0.05, 'square']],
+                scan: [[440, 0.07, 'square'], [587, 0.07, 'square'], [880, 0.12, 'square']],
+                queue: [[523, 0.08, 'triangle'], [659, 0.08, 'triangle'], [784, 0.14, 'triangle']],
+                heart: [[659, 0.08, 'sine'], [880, 0.16, 'triangle']],
+                extend: [[440, 0.06, 'square'], [554, 0.06, 'square'], [659, 0.06, 'square'], [880, 0.14, 'square']],
+                match: [[523, 0.08, 'square'], [659, 0.08, 'square'], [784, 0.08, 'square'], [1046, 0.22, 'square']],
+                refund: [[660, 0.07, 'triangle'], [520, 0.11, 'triangle']],
+                report: [[240, 0.12, 'sawtooth'], [180, 0.18, 'sawtooth']]
+            }[type] || [[440, 0.05, 'square']];
+
+            var offset = 0;
+            notes.forEach(function (n) {
+                var osc = audioCtx.createOscillator();
+                var gain = audioCtx.createGain();
+                osc.type = n[2];
+                osc.frequency.setValueAtTime(n[0], now + offset);
+                gain.gain.setValueAtTime(0.06, now + offset);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + offset + n[1]);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now + offset);
+                osc.stop(now + offset + n[1]);
+                offset += n[1] * 0.9;
+            });
+        } catch (e) {
+            // Ignore audio errors if blocked by browser autoplay policy
+        }
+    }
+
+    /* ==========================================================================
+       3. PROCEDURAL PIXEL ART SPRITE ENGINE (8x8, 16x16, 32x32 CANVASES)
+       ========================================================================== */
+    var N16 = 16;
+    function makeGrid16(rows, topOffset) {
+        var g = new Array(256).fill(0);
+        rows.forEach(function (r, y) {
+            for (var x = 0; x < N16; x++) {
+                if (r[x] === '#') g[(y + (topOffset || 0)) * N16 + x] = 1;
+            }
+        });
+        return g;
+    }
+
+    var SPRITE_LOCK = makeGrid16([
+        ".....######.....",
+        "....########....",
+        "...###....###...",
+        "...##......##...",
+        "...##......##...",
+        "..############..",
+        ".##############.",
+        ".##############.",
+        ".######..######.",
+        ".######..######.",
+        ".######..######.",
+        ".##############.",
+        "..############.."
+    ], 1);
+
+    var SPRITE_SHIELD = makeGrid16([
+        ".......##.......",
+        "....########....",
+        "..############..",
+        ".##############.",
+        ".##############.",
+        ".##########..##.",
+        ".#########..###.",
+        ".###..###..####.",
+        "..###..#..####..",
+        "...###...####...",
+        "....########....",
+        ".....######.....",
+        "......####......",
+        ".......##......."
+    ], 1);
+
+    var SPRITE_RADAR = makeGrid16([
+        "....########....",
+        "..############..",
+        ".###........###.",
+        "###...####...###",
+        "##...######...##",
+        "##..##....##..##",
+        "##..#..##..#..##",
+        "##..#..##..#..##",
+        "##..##....##..##",
+        "##...######...##",
+        "###...####...###",
+        ".###........###.",
+        "..############..",
+        "....########...."
+    ], 1);
+
+    var SPRITE_HEART = makeGrid16([
+        "..####....####..",
+        ".######..######.",
+        "################",
+        "################",
+        "################",
+        ".##############.",
+        "..############..",
+        "...##########...",
+        "....########....",
+        ".....######.....",
+        "......####......",
+        ".......##......."
+    ], 2);
+
+    var SPRITE_CHAT = makeGrid16([
+        "..############..",
+        ".##############.",
+        "###..........###",
+        "###..######..###",
+        "###..........###",
+        "###..####....###",
+        ".##############.",
+        "..############..",
+        "....####........",
+        "...###..........",
+        "..##............"
+    ], 2);
+
+    var STAGE_SPRITES = [
+        SPRITE_LOCK,
+        SPRITE_LOCK,
+        SPRITE_SHIELD,
+        SPRITE_RADAR,
+        SPRITE_HEART,
+        SPRITE_HEART,
+        SPRITE_CHAT
+    ];
+
+    function drawGrid16(canvasId, grid, fgColor, accentColor) {
+        var cv = document.getElementById(canvasId);
+        if (!cv) return;
+        var ctx = cv.getContext('2d');
+        ctx.clearRect(0, 0, 16, 16);
+        for (var i = 0; i < 256; i++) {
+            if (grid[i]) {
+                var x = i % 16;
+                var y = Math.floor(i / 16);
+                ctx.fillStyle = (accentColor && (y + x) % 5 === 0) ? accentColor : fgColor;
+                ctx.fillRect(x, y, 1, 1);
+            }
+        }
+    }
+
+    var FACE_8X8 = [
+        "..####..",
+        ".######.",
+        "##.##.##",
+        "########",
+        "#.####.#",
+        "##....##",
+        ".######.",
+        "..####.."
+    ];
+
+    function drawAvatar8(canvasId, mainColor, eyeColor) {
+        var cv = document.getElementById(canvasId);
+        if (!cv) return;
+        var ctx = cv.getContext('2d');
+        ctx.clearRect(0, 0, 8, 8);
+        FACE_8X8.forEach(function (row, y) {
+            for (var x = 0; x < 8; x++) {
+                if (row[x] === '#') {
+                    ctx.fillStyle = mainColor;
+                    ctx.fillRect(x, y, 1, 1);
+                } else if (y === 2 && (x === 2 || x === 5)) {
+                    ctx.fillStyle = eyeColor || '#ffe600';
+                    ctx.fillRect(x, y, 1, 1);
+                }
+            }
+        });
+    }
+
+    function drawMatchCanvas(outcome) {
+        var cv = document.getElementById('match-canvas');
+        if (!cv) return;
+        var ctx = cv.getContext('2d');
+        ctx.clearRect(0, 0, 16, 16);
+        if (outcome === 'mutual') {
+            drawGrid16('match-canvas', SPRITE_HEART, '#ff5a36', '#ffe600');
+        } else {
+            drawGrid16('match-canvas', SPRITE_RADAR, '#2bd9ff', '#ffe600');
+        }
+    }
+
+    /* Animated 32x32 Liveness Camera Canvas (or Local 32x32 Pixelated Webcam) */
+    function renderCamFrame(ts) {
+        var cv = document.getElementById('cam-canvas');
+        if (!cv) return;
+        var ctx = cv.getContext('2d');
+
+        if (state.webcamActive && state.webcamVideo && state.webcamVideo.readyState >= 2) {
+            ctx.drawImage(state.webcamVideo, 0, 0, 32, 32);
+        } else {
+            ctx.fillStyle = '#120624';
+            ctx.fillRect(0, 0, 32, 32);
+            var p = PERSONAS[state.persona];
+            var bob = Math.round(Math.sin(ts / 350));
+            // Draw stylized 32x32 pixel portrait
+            ctx.fillStyle = p.selfColor;
+            ctx.fillRect(9, 7 + bob, 14, 15);
+            ctx.fillRect(7, 10 + bob, 18, 10);
+            // Eyes (blink every 3s)
+            var blink = (Math.floor(ts / 160) % 18 === 0);
+            ctx.fillStyle = '#120624';
+            ctx.fillRect(11, 12 + bob, 3, blink ? 1 : 3);
+            ctx.fillRect(18, 12 + bob, 3, blink ? 1 : 3);
+            // Smile
+            ctx.fillRect(12, 18 + bob, 8, 2);
+            ctx.fillRect(11, 17 + bob, 2, 1);
+            ctx.fillRect(19, 17 + bob, 2, 1);
+            // Shoulders
+            ctx.fillStyle = '#ffe600';
+            ctx.fillRect(6, 23, 20, 7);
+        }
+
+        // Corner targeting brackets
+        ctx.fillStyle = '#39ff88';
+        ctx.fillRect(2, 2, 5, 1);
+        ctx.fillRect(2, 2, 1, 5);
+        ctx.fillRect(25, 2, 5, 1);
+        ctx.fillRect(29, 2, 1, 5);
+        ctx.fillRect(2, 29, 5, 1);
+        ctx.fillRect(2, 25, 1, 5);
+        ctx.fillRect(25, 29, 5, 1);
+        ctx.fillRect(29, 25, 1, 5);
+    }
+
+    /* Background Morphing 16x16 Sprite Loop */
+    var bgCurrentStage = 1;
+    var bgNoise = [];
+    for (var k = 0; k < 256; k++) bgNoise.push(Math.random());
+
+    function animateSprites(ts) {
+        bgCurrentStage += (state.stage - bgCurrentStage) * 0.1;
+        var idx = Math.max(1, Math.min(5, Math.floor(bgCurrentStage)));
+        var frac = bgCurrentStage - idx;
+        var spriteA = STAGE_SPRITES[idx] || SPRITE_HEART;
+        var spriteB = STAGE_SPRITES[idx + 1] || SPRITE_HEART;
+
+        var bgCv = document.getElementById('bg-sprite');
+        if (bgCv) {
+            var bctx = bgCv.getContext('2d');
+            bctx.clearRect(0, 0, 16, 16);
+            bctx.fillStyle = (state.stage >= 3 && state.stage <= 4) ? '#ffe600' : '#2b0a00';
+            for (var i = 0; i < 256; i++) {
+                var on = frac > bgNoise[i] ? spriteB[i] : spriteA[i];
+                if (on) {
+                    bctx.fillRect(i % 16, Math.floor(i / 16), 1, 1);
+                }
+            }
+        }
+
+        if (state.stage === 2) {
+            renderCamFrame(ts);
+        }
+        requestAnimationFrame(animateSprites);
+    }
+
+    /* ==========================================================================
+       4. TELEMETRY EVENT LOGGER & NORTH STAR CALCULATOR (SLIDE 6 & 8 SPEC)
+       ========================================================================== */
+    function logEvent(eventName, detailObj) {
+        var logContainer = document.getElementById('event-log');
+        if (!logContainer) return;
+
+        var now = new Date();
+        var hh = ('0' + now.getHours()).slice(-2);
+        var mm = ('0' + now.getMinutes()).slice(-2);
+        var ss = ('0' + now.getSeconds()).slice(-2);
+
+        var row = document.createElement('div');
+        row.className = 'log-entry';
+
+        var detailStr = Object.keys(detailObj || {}).map(function (key) {
+            return key + '=' + detailObj[key];
+        }).join(' Â· ');
+
+        row.innerHTML =
+            '<span class="log-time">[' + hh + ':' + mm + ':' + ss + ']</span>' +
+            '<span class="log-name">' + eventName + '</span>' +
+            '<span>' + detailStr + '</span>';
+
+        logContainer.insertBefore(row, logContainer.firstChild);
+    }
+
+    function updateTelemetryHUD() {
+        var ns = (
+            state.metrics.callsPerWeek *
+            (state.metrics.completionPct / 100) *
+            (state.metrics.mutualRatePct / 100)
+        ).toFixed(2);
+
+        document.getElementById('ns-total').textContent = ns;
+        document.getElementById('ns-calls').textContent = state.metrics.callsPerWeek.toFixed(1);
+        document.getElementById('ns-comp').textContent = state.metrics.completionPct + '%';
+        document.getElementById('ns-rate').textContent = state.metrics.mutualRatePct + '%';
+
+        document.getElementById('gr-wait').textContent = state.metrics.womenWaitSec + 's PASS';
+        document.getElementById('gr-reports').textContent = state.metrics.reportsPer1k.toFixed(1) + ' PASS';
+        document.getElementById('gr-comp').textContent = state.metrics.completionPct + '% PASS';
+    }
+
+    /* ==========================================================================
+       5. STAGE NAVIGATION & SCREEN SYNCHRONIZATION
+       ========================================================================== */
+    function syncPersonaAndTierUI() {
+        var p = PERSONAS[state.persona];
+        document.getElementById('phone-persona-label').textContent = p.label;
+        document.getElementById('fomo-strip-text').textContent = p.fomoText;
+        document.getElementById('bub-left').textContent = p.bubLeft;
+        document.getElementById('bub-right').textContent = p.bubRight;
+
+        // Queue wait & rank
+        var effectiveWait = state.tier === 'priority' ? 14 : p.waitSec;
+        state.queueWaitSec = effectiveWait;
+        document.getElementById('queue-rank-pill').textContent =
+            (state.persona === 'ananya' || state.tier === 'priority') ? '#1 PRIORITY' : p.queueRank;
+        document.getElementById('queue-wait-label').textContent =
+            'Estimated wait: ' + effectiveWait + ' sec';
+
+        // Call screen labels
+        document.getElementById('peer-name').textContent = p.peerName;
+        document.getElementById('peer-shared').textContent = p.peerShared;
+        document.getElementById('self-call-name').textContent = p.selfCallTitle;
+        document.getElementById('chat-peer-header').textContent = p.peerShort;
+
+        // Redraw 8x8 caller avatars
+        drawAvatar8('peer-avatar', p.peerColor, '#ffe600');
+        drawAvatar8('self-avatar', p.selfColor, '#12060b');
+
+        // Tier badges
+        var tierNames = { free: 'FREE', plus: 'PLUS â‚¹499', priority: 'PRIORITY â‚¹799' };
+        var tokenText = state.tier === 'free' ? (state.tokens + '/3 CALLS') : 'UNLIMITED';
+        document.getElementById('top-tier-label').textContent = tierNames[state.tier] + ' Â· ' + tokenText;
+        document.getElementById('token-count-text').textContent =
+            state.tier === 'free' ? (state.tokens + ' TOKENS') : 'UNLIMITED';
+        document.getElementById('active-tier-pill').textContent = tierNames[state.tier];
+
+        // Sync console active buttons
+        document.getElementById('btn-persona-ananya').classList.toggle('active', state.persona === 'ananya');
+        document.getElementById('btn-persona-rohan').classList.toggle('active', state.persona === 'rohan');
+
+        document.querySelectorAll('[data-tier]').forEach(function (btn) {
+            btn.classList.toggle('active', btn.getAttribute('data-tier') === state.tier);
+        });
+    }
+
+    function formatTimer(sec) {
+        var m = Math.floor(sec / 60);
+        var s = sec % 60;
+        return ('0' + m).slice(-2) + ':' + ('0' + s).slice(-2);
+    }
+
+    function stopCallClock() {
+        if (state.callInterval) {
+            clearInterval(state.callInterval);
+            state.callInterval = null;
+        }
+    }
+
+    function startCallSession() {
+        stopCallClock();
+        state.callSecondsLeft = 180;
+        state.callSecondsElapsed = 0;
+        state.userHearted = false;
+        state.userExtended = false;
+        state.partnerExtended = false;
+        state.muted = false;
+
+        if (state.tier === 'free' && state.tokens > 0) {
+            state.tokens--;
+        }
+        syncPersonaAndTierUI();
+
+        document.getElementById('call-timer').textContent = formatTimer(state.callSecondsLeft);
+        document.getElementById('call-elapsed-pill').textContent = '0s ELAPSED (<30s SAFE EXIT)';
+        document.getElementById('btn-heart').classList.remove('active');
+        document.getElementById('heart-label').textContent = 'Vibe';
+        document.getElementById('btn-extend').classList.remove('active');
+        document.getElementById('extend-label').textContent = 'Extend +3';
+        document.getElementById('mute-label').textContent = 'Mute';
+        document.getElementById('call-status-msg').textContent =
+            'Tap Vibe if you feel chemistry. Under 30s hang-up = 0 penalty.';
+
+        var currentIce = ICEBREAKERS[state.icebreakerIndex];
+        document.getElementById('ice-question-text').textContent = currentIce.q;
+        document.getElementById('peer-voice-line').textContent = currentIce.reply;
+
+        state.callInterval = setInterval(function () {
+            if (state.stage !== 4) return;
+            if (state.callSecondsLeft > 0) {
+                state.callSecondsLeft--;
+                state.callSecondsElapsed++;
+                document.getElementById('call-timer').textContent = formatTimer(state.callSecondsLeft);
+                if (state.callSecondsElapsed < 30) {
+                    document.getElementById('call-elapsed-pill').textContent =
+                        state.callSecondsElapsed + 's (<30s NO PENALTY)';
+                } else {
+                    document.getElementById('call-elapsed-pill').textContent =
+                        'LIVE Â· ' + state.callSecondsElapsed + 's ELAPSED';
+                }
+            } else {
+                completeCallAndEvaluate();
+            }
+        }, 1000);
+    }
+
+    function completeCallAndEvaluate() {
+        stopCallClock();
+        var isMutual = state.userHearted && state.partnerWillHeart;
+        state.lastOutcome = isMutual ? 'mutual' : 'onesided';
+
+        logEvent('call_completed', {
+            duration_s: state.callSecondsElapsed || 180,
+            persona: state.persona,
+            extended: state.userExtended && state.partnerExtended
+        });
+
+        state.metrics.callsPerWeek = +(state.metrics.callsPerWeek + 0.2).toFixed(1);
+        state.metrics.completionPct = Math.min(85, state.metrics.completionPct + 2);
+
+        if (isMutual) {
+            state.metrics.mutualRatePct = Math.min(65, state.metrics.mutualRatePct + 3);
+            logEvent('mutual_heart', {
+                peer: PERSONAS[state.persona].peerShort,
+                chat_unlocked: true
+            });
+            playSound('match');
+        } else {
+            logEvent('call_wrap_neutral', {
+                user_tap: state.userHearted ? 'hidden' : 'none',
+                rejection_signal: 'none'
+            });
+            playSound('queue');
+        }
+
+        updateTelemetryHUD();
+        goToStage(5, true);
+    }
+
+    function renderStage5Outcome() {
+        var p = PERSONAS[state.persona];
+        var ice = ICEBREAKERS[state.icebreakerIndex];
+        drawMatchCanvas(state.lastOutcome);
+
+        if (state.lastOutcome === 'mutual') {
+            document.getElementById('match-top-title').textContent = 'Instant Match';
+            document.getElementById('match-top-badge').textContent = 'MUTUAL HEART';
+            document.getElementById('match-headline').textContent = "It's a match";
+            document.getElementById('match-subcopy').textContent =
+                'You both tapped the heart â€” call ended, chat is open.';
+            document.getElementById('match-summary-box').innerHTML =
+                '<strong>Matched with ' + p.peerName + '</strong><br>' +
+                '<span>Verified 3-min voice call Â· Bonded over: "' + ice.q + '"</span>';
+            document.getElementById('btn-open-chat').style.display = 'inline-flex';
+        } else if (state.lastOutcome === 'early_hangup') {
+            document.getElementById('match-top-title').textContent = 'Early Exit (<30s)';
+            document.getElementById('match-top-badge').textContent = 'TOKEN REFUNDED';
+            document.getElementById('match-headline').textContent = 'No penalty, re-queued';
+            document.getElementById('match-subcopy').textContent =
+                'Hang-up under 30s: your free call token was refunded and no heart was asked.';
+            document.getElementById('match-summary-box').innerHTML =
+                '<strong>Slide 6 Edge Case Verified: Hang-up &lt; 30s</strong><br>' +
+                '<span>Zero penalty Â· Call token restored Â· Ready for next caller</span>';
+            document.getElementById('btn-open-chat').style.display = 'none';
+        } else {
+            document.getElementById('match-top-title').textContent = 'Call Wrapped';
+            document.getElementById('match-top-badge').textContent = 'ZERO REJECTION';
+            document.getElementById('match-headline').textContent = 'On to the next vibe';
+            document.getElementById('match-subcopy').textContent =
+                'One-sided hearts stay 100% invisibleâ€”nothing is shown and nobody gets rejected.';
+            document.getElementById('match-summary-box').innerHTML =
+                '<strong>Slide 6 Edge Case Verified: One-Sided Heart Privacy</strong><br>' +
+                '<span>Whether one person tapped or neither tapped, the wrap screen is identical.</span>';
+            document.getElementById('btn-open-chat').style.display = 'none';
+        }
+    }
+
+    function goToStage(stageNum, skipDefaultSound) {
+        state.stage = stageNum;
+        document.body.setAttribute('data-stage', String(stageNum));
+
+        var cfg = STAGE_COPY[stageNum];
+        document.getElementById('stage-headline').textContent = cfg.headline;
+        document.getElementById('stage-subcopy').textContent = cfg.subcopy;
+        document.getElementById('phone-shell').classList.toggle('dark-screen', cfg.darkPhone);
+
+        // Toggle active screen pane
+        for (var i = 1; i <= 6; i++) {
+            var pane = document.getElementById('screen-' + i);
+            if (pane) pane.classList.toggle('active', i === stageNum);
+        }
+
+        // Toggle top stepper buttons
+        document.querySelectorAll('.step-btn').forEach(function (btn) {
+            btn.classList.toggle('active', Number(btn.getAttribute('data-goto')) === stageNum);
+        });
+
+        // Toggle bottom nav tabs
+        document.querySelectorAll('.nav-tab').forEach(function (tab) {
+            tab.classList.toggle('active', Number(tab.getAttribute('data-goto')) === stageNum);
+        });
+
+        // Stage-specific lifecycle hooks & telemetry
+        if (stageNum === 1) {
+            stopCallClock();
+            logEvent('live_tab_view', { persona: state.persona, locked: true });
+            if (!skipDefaultSound) playSound('click');
+        } else if (stageNum === 2) {
+            stopCallClock();
+            document.getElementById('scan-status-pill').textContent = 'VERIFIED PASS';
+            document.getElementById('chk-3').classList.add('done');
+            document.getElementById('chk-3-text').textContent = 'Liveness & lighting check passed';
+            logEvent('verify_pass', { mode: state.webcamActive ? 'webcam_32px' : 'sim_32px', pii_stored: false });
+            if (!skipDefaultSound) playSound('scan');
+        } else if (stageNum === 3) {
+            stopCallClock();
+            document.getElementById('queue-timeout-alert').classList.remove('visible');
+            logEvent('queue_wait_s', {
+                est_wait_s: state.queueWaitSec,
+                priority: state.persona === 'ananya' || state.tier === 'priority'
+            });
+            if (!skipDefaultSound) playSound('queue');
+        } else if (stageNum === 4) {
+            startCallSession();
+            if (!skipDefaultSound) playSound('queue');
+        } else if (stageNum === 5) {
+            stopCallClock();
+            renderStage5Outcome();
+        } else if (stageNum === 6) {
+            stopCallClock();
+            logEvent('chat_session_open', { peer: PERSONAS[state.persona].peerShort });
+            if (!skipDefaultSound) playSound('click');
+        }
+    }
+
+    /* ==========================================================================
+       6. EVENT LISTENERS & EDGE-CASE LAB WIRING
+       ========================================================================== */
+    function initEvents() {
+        // Initial pixel art draws
+        drawGrid16('lock-canvas', SPRITE_LOCK, '#fff0d6', '#ffe600');
+        drawGrid16('radar-canvas', SPRITE_RADAR, '#ffe600', '#ff5a36');
+        syncPersonaAndTierUI();
+        updateTelemetryHUD();
+        logEvent('live_tab_view', { persona: state.persona, city: 'Bengaluru_9_11PM' });
+
+        // Top stepper & bottom nav navigation
+        document.querySelectorAll('[data-goto]').forEach(function (el) {
+            el.addEventListener('click', function () {
+                var target = Number(el.getAttribute('data-goto'));
+                if (target === 4 && state.stage !== 4) {
+                    state.userHearted = true; // default demo convenience
+                }
+                goToStage(target);
+            });
+        });
+
+        // Screen 1 -> Screen 2
+        document.getElementById('btn-unlock-live').addEventListener('click', function () {
+            goToStage(2);
+        });
+
+        // Screen 2: Optional 32x32 local webcam toggle
+        document.getElementById('btn-toggle-webcam').addEventListener('click', function () {
+            var btn = document.getElementById('btn-toggle-webcam');
+            if (state.webcamActive) {
+                if (state.webcamStream) {
+                    state.webcamStream.getTracks().forEach(function (t) { t.stop(); });
+                }
+                state.webcamActive = false;
+                btn.textContent = 'LIVE CAM';
+                return;
+            }
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { width: 64, height: 64 }, audio: false })
+                    .then(function (stream) {
+                        state.webcamStream = stream;
+                        var v = document.createElement('video');
+                        v.srcObject = stream;
+                        v.muted = true;
+                        v.playsInline = true;
+                        v.play();
+                        state.webcamVideo = v;
+                        state.webcamActive = true;
+                        btn.textContent = 'SIM SPRITE';
+                        logEvent('webcam_32px_local', { pii_uploaded: false });
+                    })
+                    .catch(function () {
+                        btn.textContent = 'SIMULATED ONLY';
+                    });
+            }
+        });
+
+        // Screen 2 -> Screen 3
+        document.getElementById('btn-enter-queue').addEventListener('click', function () {
+            goToStage(3);
+        });
+
+        // Screen 3: Toggleable interest chips
+        document.querySelectorAll('.filter-chip').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                chip.classList.toggle('active');
+                playSound('click');
+            });
+        });
+
+        // Screen 3 -> Screen 4 or Leave Queue
+        document.getElementById('btn-connect-call').addEventListener('click', function () {
+            goToStage(4);
+        });
+        document.getElementById('btn-leave-queue').addEventListener('click', function () {
+            goToStage(1);
+        });
+
+        // Screen 4: Shuffle Icebreaker
+        document.getElementById('btn-shuffle-ice').addEventListener('click', function () {
+            state.icebreakerIndex = (state.icebreakerIndex + 1) % ICEBREAKERS.length;
+            var item = ICEBREAKERS[state.icebreakerIndex];
+            document.getElementById('ice-question-text').textContent = item.q;
+            document.getElementById('peer-voice-line').textContent = item.reply;
+            playSound('click');
+            logEvent('icebreaker_shuffle', { prompt: item.q.slice(0, 22) + '...' });
+        });
+
+        // Screen 4: Mute button
+        document.getElementById('btn-mute').addEventListener('click', function () {
+            state.muted = !state.muted;
+            document.getElementById('mute-label').textContent = state.muted ? 'Muted' : 'Mute';
+            document.getElementById('self-mic-status').textContent = state.muted
+                ? 'Mic muted Â· Tap Mute to speak again'
+                : 'Mic live Â· One-sided hearts stay invisible';
+            playSound('click');
+        });
+
+        // Screen 4: Heart (Vibe) button
+        document.getElementById('btn-heart').addEventListener('click', function () {
+            state.userHearted = !state.userHearted;
+            var btn = document.getElementById('btn-heart');
+            btn.classList.toggle('active', state.userHearted);
+            document.getElementById('heart-label').textContent = state.userHearted ? 'Hearted' : 'Vibe';
+            document.getElementById('call-status-msg').textContent = state.userHearted
+                ? 'Secret heart locked! Kept 100% invisible unless both tap.'
+                : 'Heart removed. Tap Vibe anytime before 0:00.';
+            playSound('heart');
+        });
+
+        // Screen 4: Extend +3 min button
+        document.getElementById('btn-extend').addEventListener('click', function () {
+            if (state.userExtended) return;
+            state.userExtended = true;
+            state.partnerExtended = true; // Partner co-signs extension in demo
+            state.callSecondsLeft += 180;
+            document.getElementById('btn-extend').classList.add('active');
+            document.getElementById('extend-label').textContent = '+3m Added';
+            document.getElementById('call-timer').textContent = formatTimer(state.callSecondsLeft);
+            document.getElementById('call-status-msg').textContent =
+                'Both tapped Extend +3! Added 3:00 to the voice call.';
+            playSound('extend');
+            logEvent('extend_plus_3m', { mutual_tap: true, added_s: 180 });
+        });
+
+        // Screen 4: End Call button (checks <30s rule vs full call resolution)
+        document.getElementById('btn-end-call').addEventListener('click', function () {
+            if (state.callSecondsElapsed < 30 && !state.userHearted) {
+                stopCallClock();
+                if (state.tier === 'free') {
+                    state.tokens = Math.min(3, state.tokens + 1);
+                }
+                state.lastOutcome = 'early_hangup';
+                syncPersonaAndTierUI();
+                playSound('refund');
+                logEvent('early_hangup_refund', {
+                    elapsed_s: state.callSecondsElapsed,
+                    penalty: 0,
+                    token_refunded: true
+                });
+                goToStage(5, true);
+            } else {
+                completeCallAndEvaluate();
+            }
+        });
+
+        // Screen 4: Report button opens safety dialog
+        document.getElementById('btn-report-call').addEventListener('click', function () {
+            var dlg = document.getElementById('dialog-report');
+            if (dlg && dlg.showModal) dlg.showModal();
+        });
+
+        // Screen 5 buttons
+        document.getElementById('btn-open-chat').addEventListener('click', function () {
+            goToStage(6);
+        });
+        document.getElementById('btn-requeue-from-match').addEventListener('click', function () {
+            goToStage(3);
+        });
+
+        // Screen 6: Rating chips & chat form
+        document.querySelectorAll('.rate-chip').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                document.querySelectorAll('.rate-chip').forEach(function (c) { c.classList.remove('active'); });
+                chip.classList.add('active');
+                var rating = chip.getAttribute('data-rate');
+                playSound('heart');
+                logEvent('call_rated', { rating: rating, trains_matching: true });
+            });
+        });
+
+        function appendChatMessage(text, sender) {
+            var chatLog = document.getElementById('chat-log');
+            var div = document.createElement('div');
+            div.className = 'chat-msg ' + sender;
+            div.textContent = text;
+            chatLog.appendChild(div);
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        document.querySelectorAll('.quick-reply-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var msg = btn.getAttribute('data-reply');
+                appendChatMessage(msg, 'you');
+                playSound('click');
+                setTimeout(function () {
+                    appendChatMessage('Done! Locking it inâ€”way better than texting for 5 days.', 'them');
+                    playSound('heart');
+                }, 650);
+            });
+        });
+
+        document.getElementById('chat-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            var input = document.getElementById('chat-input');
+            var text = input.value.trim();
+            if (!text) return;
+            appendChatMessage(text, 'you');
+            input.value = '';
+            playSound('click');
+            setTimeout(function () {
+                appendChatMessage('Sounds like a plan! See you in Indiranagar.', 'them');
+                playSound('heart');
+            }, 700);
+        });
+
+        /* ======================================================================
+           PM DIRECTOR'S CONSOLE CONTROLS (RIGHT PANEL)
+           ====================================================================== */
+        document.getElementById('btn-audio-toggle').addEventListener('click', function () {
+            state.audioOn = !state.audioOn;
+            var btn = document.getElementById('btn-audio-toggle');
+            btn.textContent = state.audioOn ? 'AUDIO: ON' : 'AUDIO: OFF';
+            btn.classList.toggle('active', state.audioOn);
+            if (state.audioOn) playSound('click');
+        });
+
+        document.getElementById('btn-persona-ananya').addEventListener('click', function () {
+            state.persona = 'ananya';
+            state.metrics.womenWaitSec = 18;
+            syncPersonaAndTierUI();
+            updateTelemetryHUD();
+            playSound('click');
+            logEvent('persona_switch', { persona: 'Ananya_26_BLR', priority_queue: true });
+        });
+
+        document.getElementById('btn-persona-rohan').addEventListener('click', function () {
+            state.persona = 'rohan';
+            syncPersonaAndTierUI();
+            updateTelemetryHUD();
+            playSound('click');
+            logEvent('persona_switch', { persona: 'Rohan_27_MUM', wait_s: 38 });
+        });
+
+        document.querySelectorAll('[data-tier]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                state.tier = btn.getAttribute('data-tier');
+                if (state.tier !== 'free') state.tokens = 99;
+                else state.tokens = 3;
+                syncPersonaAndTierUI();
+                playSound('extend');
+                logEvent('tier_change', { tier: state.tier });
+            });
+        });
+
+        // Partner Heart Brain Toggle
+        document.getElementById('btn-partner-mutual').addEventListener('click', function () {
+            state.partnerWillHeart = true;
+            document.getElementById('btn-partner-mutual').classList.add('active');
+            document.getElementById('btn-partner-onesided').classList.remove('active');
+            playSound('heart');
+            logEvent('partner_brain_set', { partner_will_heart: true });
+        });
+
+        document.getElementById('btn-partner-onesided').addEventListener('click', function () {
+            state.partnerWillHeart = false;
+            document.getElementById('btn-partner-onesided').classList.add('active');
+            document.getElementById('btn-partner-mutual').classList.remove('active');
+            playSound('click');
+            logEvent('partner_brain_set', { partner_will_heart: false });
+        });
+
+        // 4 One-Click Slide 6 Edge Case Triggers
+        document.getElementById('edge-early-hangup').addEventListener('click', function () {
+            goToStage(4, true);
+            state.callSecondsElapsed = 12;
+            state.userHearted = false;
+            stopCallClock();
+            if (state.tier === 'free') state.tokens = Math.min(3, state.tokens + 1);
+            state.lastOutcome = 'early_hangup';
+            syncPersonaAndTierUI();
+            playSound('refund');
+            logEvent('early_hangup_refund', { elapsed_s: 12, penalty: 0, token_refunded: true });
+            goToStage(5, true);
+        });
+
+        document.getElementById('edge-queue-timeout').addEventListener('click', function () {
+            goToStage(3, true);
+            document.getElementById('queue-timeout-alert').classList.add('visible');
+            document.getElementById('queue-wait-label').textContent = 'Wait > 90s Â· Next Slot Offered';
+            playSound('refund');
+            logEvent('queue_timeout_90s', { fallback: 'next_live_hour_10pm_priority' });
+        });
+
+        document.getElementById('edge-mutual-extend').addEventListener('click', function () {
+            if (state.stage !== 4) goToStage(4, true);
+            state.userExtended = true;
+            state.partnerExtended = true;
+            state.callSecondsLeft += 180;
+            document.getElementById('btn-extend').classList.add('active');
+            document.getElementById('extend-label').textContent = '+3m Added';
+            document.getElementById('call-timer').textContent = formatTimer(state.callSecondsLeft);
+            document.getElementById('call-status-msg').textContent =
+                'Edge Case Triggered: Both tapped Extend +3 (+180s added)!';
+            playSound('extend');
+            logEvent('extend_plus_3m', { mutual_tap: true, new_timer: formatTimer(state.callSecondsLeft) });
+        });
+
+        document.getElementById('edge-abuse-report').addEventListener('click', function () {
+            if (state.stage !== 4) goToStage(4, true);
+            var dlg = document.getElementById('dialog-report');
+            if (dlg && dlg.showModal) dlg.showModal();
+        });
+
+        document.getElementById('btn-clear-log').addEventListener('click', function () {
+            document.getElementById('event-log').innerHTML = '';
+            logEvent('telemetry_reset', { status: 'ready' });
+        });
+
+        /* ======================================================================
+           ARCADE CONTROL DOCK & KEYBOARD SHORTCUTS
+           ====================================================================== */
+        function runShortcutAction(action) {
+            if (action === 'stage') {
+                var nextStage = (state.stage % 6) + 1;
+                goToStage(nextStage);
+            } else if (action === 'heart') {
+                if (state.stage !== 4) goToStage(4, true);
+                document.getElementById('btn-heart').click();
+            } else if (action === 'ice') {
+                if (state.stage !== 4) goToStage(4, true);
+                document.getElementById('btn-shuffle-ice').click();
+            } else if (action === 'extend') {
+                if (state.stage !== 4) goToStage(4, true);
+                document.getElementById('btn-extend').click();
+            } else if (action === 'mute') {
+                if (state.stage !== 4) goToStage(4, true);
+                document.getElementById('btn-mute').click();
+            }
+        }
+
+        document.querySelectorAll('[data-shortcut]').forEach(function (chip) {
+            chip.addEventListener('click', function () {
+                runShortcutAction(chip.getAttribute('data-shortcut'));
+            });
+        });
+
+        window.addEventListener('keydown', function (e) {
+            var activeTag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
+            if (activeTag === 'input' || activeTag === 'textarea' || e.metaKey || e.ctrlKey || e.altKey) {
+                return;
+            }
+            var k = e.key.toLowerCase();
+            if (k >= '1' && k <= '6') {
+                goToStage(Number(k));
+            } else if (k === 'h') {
+                runShortcutAction('heart');
+            } else if (k === 'r') {
+                runShortcutAction('ice');
+            } else if (k === 'e') {
+                runShortcutAction('extend');
+            } else if (k === 'm') {
+                runShortcutAction('mute');
+            }
+        });
+
+        /* ======================================================================
+           DIALOG MODALS (PRICING, CASE BRIEF, SAFETY REPORT)
+           ====================================================================== */
+        function openDialog(id) {
+            var dlg = document.getElementById(id);
+            if (dlg && dlg.showModal) {
+                dlg.showModal();
+                playSound('click');
+            }
+        }
+
+        document.getElementById('btn-open-pricing').addEventListener('click', function () {
+            openDialog('dialog-pricing');
+        });
+        document.getElementById('btn-token-badge').addEventListener('click', function () {
+            openDialog('dialog-pricing');
+        });
+        document.getElementById('btn-open-case').addEventListener('click', function () {
+            openDialog('dialog-case');
+        });
+
+        document.querySelectorAll('[data-close-dialog]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var id = btn.getAttribute('data-close-dialog');
+                var dlg = document.getElementById(id);
+                if (dlg && dlg.close) dlg.close();
+            });
+        });
+
+        document.querySelectorAll('[data-select-tier]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                state.tier = btn.getAttribute('data-select-tier');
+                state.tokens = state.tier === 'free' ? 3 : 99;
+                syncPersonaAndTierUI();
+                var dlg = document.getElementById('dialog-pricing');
+                if (dlg && dlg.close) dlg.close();
+                playSound('extend');
+                logEvent('tier_change', { tier: state.tier });
+            });
+        });
+
+        document.querySelectorAll('[data-submit-report]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var reason = btn.getAttribute('data-submit-report');
+                var dlg = document.getElementById('dialog-report');
+                if (dlg && dlg.close) dlg.close();
+                stopCallClock();
+                state.metrics.reportsPer1k = +(state.metrics.reportsPer1k + 0.1).toFixed(1);
+                updateTelemetryHUD();
+                playSound('report');
+                logEvent('safety_report_logged', {
+                    reason: reason.slice(0, 20),
+                    audio_recorded: false,
+                    dpdp_2023_metadata: 'retained_24h'
+                });
+                goToStage(3, true);
+                document.getElementById('queue-timeout-alert').textContent =
+                    'Caller reported & blocked. Session metadata queued for safety review; your token was refunded.';
+                document.getElementById('queue-timeout-alert').classList.add('visible');
+            });
+        });
+    }
+
+    initEvents();
+    var urlStage = Number(new URLSearchParams(window.location.search).get('stage'));
+    if (urlStage >= 1 && urlStage <= 6) {
+        goToStage(urlStage, true);
+    }
+    requestAnimationFrame(animateSprites);
+})();
+
+</script>
 </body>
 
 </html>
+
