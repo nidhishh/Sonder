@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Sonder — Verified 3-Minute Live Voice Dating POC</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Fredoka:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body data-stage="1">
+    <!-- THESIS: Hear the vibe before a week of texting via a verified 3-minute voice call during 9-11 PM Live Hours, refusing the incumbent post-match swipe-feed paywall. OWN-WORLD: Hybrid Portfolio Level-Shifter inheriting nidhishh.github.io/portfolio-website/ with Fredoka, Press Start 2P, VT323, and JetBrains Mono, 4px ink borders, 8px offset shadows, 8x8/16x16 pixel canvases, and Vermilion/Cream (#ff5a36/#fff0d6) shifting to Arcade Violet (#1a0033/#ffe600) and Phosphor Terminal (#04110a/#39ff88). STORY: Evaluators and urban Indian daters experience the 6-step Sonder loop from Locked Live Tab to Pre-Call Check, Queue, 3-Min Call, and Mutual Match while testing Slide 6 edge cases and Slide 8 telemetry live. FIRST VIEWPORT: Split workbench with the tactile retro phone shell on the left surrounded by comic speech bubbles and morphing pixel art, paired with the ArchitectOS-style Phosphor Director's Console on the right and an in-flow Arcade Control Dock below. FORM: Split-stage interactive mobile hardware simulator + live PM telemetry terminal, #1 confirmed brief, seed-key:established-portfolio-world. FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance -->
+
+    <!-- SVG Icon Spritesheet (Consistent Pixel/Geometric Stroke Grammar) -->
+    <svg width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+        <defs>
+            <symbol id="ic-heart" viewBox="0 0 16 16">
+                <path d="M2 5C2 3.3 3.3 2 5 2C6.4 2 7.5 2.8 8 4C8.5 2.8 9.6 2 11 2C12.7 2 14 3.3 14 5C14 8.5 8 13 8 13C8 13 2 8.5 2 5Z" />
+            </symbol>
+            <symbol id="ic-lock" viewBox="0 0 16 16">
+                <path d="M5 7V5C5 3.3 6.3 2 8 2C9.7 2 11 3.3 11 5V7H13V14H3V7H5ZM7 7H9V5C9 4.4 8.6 4 8 4C7.4 4 7 4.4 7 5V7Z" />
+            </symbol>
+            <symbol id="ic-shield" viewBox="0 0 16 16">
+                <path d="M8 1L2 3.5V7.5C2 11.4 4.6 14.3 8 15C11.4 14.3 14 11.4 14 7.5V3.5L8 1ZM7 11L4.5 8.5L5.9 7.1L7 8.2L10.1 5.1L11.5 6.5L7 11Z" />
+            </symbol>
+            <symbol id="ic-mic" viewBox="0 0 16 16">
+                <path d="M8 10C9.7 10 11 8.7 11 7V4C11 2.3 9.7 1 8 1C6.3 1 5 2.3 5 4V7C5 8.7 6.3 10 8 10ZM3 7H4.5C4.5 9 6.1 10.5 8 10.5C9.9 10.5 11.5 9 11.5 7H13C13 9.5 11.1 11.6 8.8 11.9V14H11V15.5H5V14H7.2V11.9C4.9 11.6 3 9.5 3 7Z" />
+            </symbol>
+            <symbol id="ic-phone" viewBox="0 0 16 16">
+                <path d="M3.5 2H6.5L8 5.5L6.2 6.8C7 8.3 8.2 9.5 9.7 10.3L11 8.5L14.5 10V13C14.5 13.8 13.8 14.5 13 14.5C6.9 14.5 2 9.6 2 3.5C2 2.7 2.7 2 3.5 2Z" />
+            </symbol>
+            <symbol id="ic-flag" viewBox="0 0 16 16">
+                <path d="M3 2H13L11.5 5.5L13 9H5V14H3V2Z" />
+            </symbol>
+            <symbol id="ic-refresh" viewBox="0 0 16 16">
+                <path d="M13.5 8C13.5 11 11 13.5 8 13.5C5 13.5 2.5 11 2.5 8C2.5 5 5 2.5 8 2.5C9.8 2.5 11.4 3.4 12.4 4.8L10.5 6.5H15V2L13.5 3.5C12.2 1.8 10.2 0.8 8 0.8C4 0.8 0.8 4 0.8 8C0.8 12 4 15.2 8 15.2C12 15.2 15.2 12 15.2 8H13.5Z" />
+            </symbol>
+            <symbol id="ic-plus" viewBox="0 0 16 16">
+                <path d="M7 2H9V7H14V9H9V14H7V9H2V7H7V2Z" />
+            </symbol>
+            <symbol id="ic-close" viewBox="0 0 16 16">
+                <path d="M3.5 2.1L8 6.6L12.5 2.1L13.9 3.5L9.4 8L13.9 12.5L12.5 13.9L8 9.4L3.5 13.9L2.1 12.5L6.6 8L2.1 3.5L3.5 2.1Z" />
+            </symbol>
+            <symbol id="ic-check" viewBox="0 0 16 16">
+                <path d="M6.2 12.3L2.3 8.4L3.7 7L6.2 9.5L12.3 3.4L13.7 4.8L6.2 12.3Z" />
+            </symbol>
+            <symbol id="ic-chat" viewBox="0 0 16 16">
+                <path d="M2 3H14V11H6L2 14V3Z" />
+            </symbol>
+            <symbol id="ic-user" viewBox="0 0 16 16">
+                <path d="M8 2C9.7 2 11 3.3 11 5C11 6.7 9.7 8 8 8C6.3 8 5 6.7 5 5C5 3.3 6.3 2 8 2ZM3 13C3 10.8 5.2 9.5 8 9.5C10.8 9.5 13 10.8 13 13V14H3V13Z" />
+            </symbol>
+            <symbol id="ic-coin" viewBox="0 0 16 16">
+                <path d="M8 1C4.1 1 1 4.1 1 8C1 11.9 4.1 15 8 15C11.9 15 15 11.9 15 8C15 4.1 11.9 1 8 1ZM7 4H9V12H7V4Z" />
+            </symbol>
+        </defs>
+    </svg>
+
+    <!-- Background Morphing 16x16 Pixel Sprite & Outlined Ghost Backdrop -->
+    <canvas id="bg-sprite" width="16" height="16" aria-hidden="true"></canvas>
+    <div class="ghost-backdrop" aria-hidden="true">SONDER</div>
+
+    <!-- Top Global Bar -->
+    <header class="top-deck">
+        <div class="brand-cluster">
+            <a href="#top" class="brand-mark">
+                <svg class="svg-icon lg" aria-hidden="true"><use href="#ic-heart"></use></svg>
+                <span>sonder</span>
+            </a>
+            <span class="live-pill tabular">
+                <span class="pulse-dot green"></span>
+                <span id="live-window-pill">BLR LIVE HOUR · 9–11 PM · 312 ONLINE</span>
+            </span>
+        </div>
+
+        <nav class="stage-stepper" aria-label="MVP 6-Screen Funnel">
+            <button type="button" class="step-btn active" data-goto="1">1. LOCK</button>
+            <button type="button" class="step-btn" data-goto="2">2. SCAN</button>
+            <button type="button" class="step-btn" data-goto="3">3. QUEUE</button>
+            <button type="button" class="step-btn" data-goto="4">4. CALL</button>
+            <button type="button" class="step-btn" data-goto="5">5. MATCH</button>
+            <button type="button" class="step-btn" data-goto="6">6. CHAT</button>
+        </nav>
+
+        <div class="top-actions">
+            <button type="button" class="arcade-btn-sm outline" id="btn-open-case">CASE BRIEF</button>
+            <button type="button" class="arcade-btn-sm" id="btn-open-pricing">
+                <svg class="svg-icon" aria-hidden="true"><use href="#ic-coin"></use></svg>
+                <span id="top-tier-label" class="tabular">FREE · 3/3 CALLS</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Split Workbench -->
+    <main class="workbench" id="top">
+
+        <!-- Left Stage: Retro Mobile Hardware Simulator -->
+        <section class="phone-stage" aria-label="Interactive Sonder Mobile Prototype">
+            <div class="stage-banner">
+                <div>
+                    <h1 id="stage-headline">Hear the vibe before a week of texting.</h1>
+                    <p id="stage-subcopy">Screen 1 of 5 (MVP): Curiosity lock badge builds FOMO before the Live tab opens; zero unverified browsing.</p>
+                </div>
+                <button type="button" class="token-badge tabular" id="btn-token-badge" title="View Freemium Tiers">
+                    <span id="token-count-text">3 TOKENS</span>
+                    <span id="active-tier-pill">FREE TIER</span>
+                </button>
+            </div>
+
+            <div class="phone-rig">
+                <div class="speech-bub left" id="bub-left">hey :) verified call!</div>
+                <div class="speech-bub right" id="bub-right">3 min vibe check</div>
+
+                <div class="phone-shell" id="phone-shell">
+                    <!-- Hardware Status Bar -->
+                    <div class="phone-statusbar tabular">
+                        <div class="status-left">
+                            <span class="pulse-dot green"></span>
+                            <span id="phone-persona-label">ANANYA · 26 · BLR</span>
+                        </div>
+                        <div class="status-right">
+                            <span id="phone-verify-badge">ID + SELFIE</span>
+                            <span>21:42 IST</span>
+                        </div>
+                    </div>
+
+                    <!-- Phone Screen Viewport -->
+                    <div class="phone-viewport">
+
+                        <!-- SCREEN 1: LOCKED LIVE TAB (live_tab_view) -->
+                        <article class="screen-pane active" id="screen-1" aria-label="Screen 1: Locked Live Tab">
+                            <div class="screen-topbar">
+                                <h2>Discover</h2>
+                                <span class="badge-pill">THU–SUN · 9–11 PM</span>
+                            </div>
+
+                            <div class="lock-hero">
+                                <div class="pixel-frame-lg">
+                                    <canvas id="lock-canvas" width="16" height="16" aria-label="Pixel padlock icon"></canvas>
+                                </div>
+                                <h3>Live is locked</h3>
+                                <p>Verify your ID to hear someone for 3 minutes before you match. No swipe feed, no bots.</p>
+                                <div class="fomo-strip tabular" id="fomo-strip-text">
+                                    BENGALURU LIVE HOUR ACTIVE · 312 VERIFIED CALLERS · MEDIAN WAIT 18s (WOMEN PRIORITY)
+                                </div>
+                            </div>
+
+                            <div>
+                                <button type="button" class="retro-cta" id="btn-unlock-live">
+                                    <svg class="svg-icon" aria-hidden="true"><use href="#ic-shield"></use></svg>
+                                    <span>Unlock Live</span>
+                                </button>
+                            </div>
+                        </article>
+
+                        <!-- SCREEN 2: PRE-CALL CHECK (verify_pass) -->
+                        <article class="screen-pane" id="screen-2" aria-label="Screen 2: Pre-call Verification Check">
+                            <div class="screen-topbar">
+                                <h2>Getting you ready</h2>
+                                <span class="badge-pill" id="scan-status-pill">SCANNING...</span>
+                            </div>
+
+                            <div class="cam-box">
+                                <div class="scan-laser" aria-hidden="true"></div>
+                                <canvas id="cam-canvas" width="32" height="32" aria-label="Pixelated liveness camera check"></canvas>
+                            </div>
+
+                            <div class="cam-toolbar">
+                                <span class="privacy-note">Zero-PII: 32x32 local pixel check only. No Aadhaar or GPS stored.</span>
+                                <button type="button" class="arcade-btn-sm" id="btn-toggle-webcam">LIVE CAM</button>
+                            </div>
+
+                            <ul class="check-list" aria-label="Pre-call verification checklist">
+                                <li class="check-item done" id="chk-1">
+                                    <span class="check-icon"><svg class="svg-icon" aria-hidden="true"><use href="#ic-check"></use></svg></span>
+                                    <span>Face visible &amp; ambient lighting OK</span>
+                                </li>
+                                <li class="check-item done" id="chk-2">
+                                    <span class="check-icon"><svg class="svg-icon" aria-hidden="true"><use href="#ic-check"></use></svg></span>
+                                    <span>Matches verified profile token</span>
+                                </li>
+                                <li class="check-item" id="chk-3">
+                                    <span class="check-icon" id="chk-3-box"><svg class="svg-icon" aria-hidden="true"><use href="#ic-check"></use></svg></span>
+                                    <span id="chk-3-text">Finding a compatible match...</span>
+                                </li>
+                            </ul>
+
+                            <button type="button" class="retro-cta" id="btn-enter-queue">
+                                <span>Join 9–11 PM Queue</span>
+                            </button>
+                        </article>
+
+                        <!-- SCREEN 3: FAIR QUEUE (queue_wait_s) -->
+                        <article class="screen-pane" id="screen-3" aria-label="Screen 3: Fair Queue and Shared Interests">
+                            <div class="screen-topbar">
+                                <h2>Finding your match</h2>
+                                <span class="badge-pill tabular" id="queue-rank-pill">#1 PRIORITY</span>
+                            </div>
+
+                            <div class="queue-radar">
+                                <div class="radar-ring">
+                                    <canvas id="radar-canvas" width="16" height="16" aria-label="Pulsing call radar"></canvas>
+                                </div>
+                                <div class="wait-readout tabular" id="queue-wait-label">Estimated wait: 18 sec</div>
+                                <p style="margin:0;font-size:18px;color:#d6b8ff" id="queue-subtext">
+                                    Matching you with a verified caller in Bengaluru who shares your interests
+                                </p>
+                            </div>
+
+                            <div>
+                                <div class="chip-cloud" id="interest-chips" role="group" aria-label="Shared interest filters">
+                                    <button type="button" class="filter-chip active" data-chip="Age 24–30">Age 24–30</button>
+                                    <button type="button" class="filter-chip active" data-chip="Within 10 km">Within 10 km</button>
+                                    <button type="button" class="filter-chip active" data-chip="Travel">Travel</button>
+                                    <button type="button" class="filter-chip active" data-chip="Music">Music</button>
+                                    <button type="button" class="filter-chip" data-chip="Filter Coffee">Filter Coffee</button>
+                                    <button type="button" class="filter-chip" data-chip="Indie Cinema">Indie Cinema</button>
+                                </div>
+                                <div class="queue-alert" id="queue-timeout-alert">
+                                    No match in 90s! Next Bengaluru Live Hour slot (10:00 PM) unlocked with Priority Pass.
+                                </div>
+                            </div>
+
+                            <div style="display:flex;flex-direction:column;gap:8px">
+                                <button type="button" class="retro-cta gold" id="btn-connect-call">
+                                    <svg class="svg-icon" aria-hidden="true"><use href="#ic-phone"></use></svg>
+                                    <span>Connect 3-Min Call Now</span>
+                                </button>
+                                <button type="button" class="retro-cta ghost-btn" id="btn-leave-queue">Leave queue</button>
+                            </div>
+                        </article>
+
+                        <!-- SCREEN 4: 3-MIN VOICE CALL (call_completed) -->
+                        <article class="screen-pane" id="screen-4" aria-label="Screen 4: 3-Minute Split Voice Call">
+                            <div class="call-topbar">
+                                <div class="call-timer-pill tabular">
+                                    <span class="pulse-dot"></span>
+                                    <span id="call-timer">03:00</span>
+                                </div>
+                                <span class="badge-pill" id="call-elapsed-pill">VOICE-FIRST V1</span>
+                                <button type="button" class="flag-btn" id="btn-report-call" title="One-tap end and report">
+                                    <svg class="svg-icon" aria-hidden="true"><use href="#ic-flag"></use></svg>
+                                    <span>REPORT</span>
+                                </button>
+                            </div>
+
+                            <div class="split-stage">
+                                <!-- Top Half: Caller -->
+                                <div class="caller-pane">
+                                    <div class="caller-row">
+                                        <canvas class="pixel-avatar" id="peer-avatar" width="8" height="8" aria-label="Caller pixel avatar"></canvas>
+                                        <div class="caller-meta">
+                                            <h3 id="peer-name">Kabir, 28 · Bengaluru</h3>
+                                            <p id="peer-shared">Verified ID · Indiranagar · Travel, Music</p>
+                                        </div>
+                                    </div>
+                                    <svg class="hb-wave" viewBox="0 0 200 32" aria-hidden="true">
+                                        <polyline id="wave-line" points="0,16 32,16 42,4 52,28 62,16 98,16 108,6 118,26 128,16 162,16 170,8 178,24 186,16 200,16"></polyline>
+                                    </svg>
+                                    <div class="voice-line" id="peer-voice-line">"Wait, pineapple on biryani is a crime—tell me your real take!"</div>
+                                </div>
+
+                                <!-- Middle Bridge: Icebreaker Box -->
+                                <div class="icebreaker-box">
+                                    <div class="ice-top">
+                                        <span class="ice-label">ICEBREAKER PROMPT</span>
+                                        <button type="button" class="ice-shuffle" id="btn-shuffle-ice">
+                                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-refresh"></use></svg>
+                                            <span>NEW</span>
+                                        </button>
+                                    </div>
+                                    <p class="ice-question" id="ice-question-text">Most unpopular food opinion?</p>
+                                </div>
+
+                                <!-- Bottom Half: You -->
+                                <div class="caller-pane self">
+                                    <div class="caller-row">
+                                        <canvas class="pixel-avatar self" id="self-avatar" width="8" height="8" aria-label="Your pixel avatar"></canvas>
+                                        <div class="caller-meta">
+                                            <h3 id="self-call-name">You (Ananya, 26)</h3>
+                                            <p id="self-mic-status">Mic live · One-sided hearts stay invisible</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="call-controls">
+                                        <button type="button" class="ctrl-btn" id="btn-mute">
+                                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-mic"></use></svg>
+                                            <span id="mute-label">Mute</span>
+                                        </button>
+                                        <button type="button" class="ctrl-btn heart-btn" id="btn-heart">
+                                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-heart"></use></svg>
+                                            <span id="heart-label">Vibe</span>
+                                        </button>
+                                        <button type="button" class="ctrl-btn extend-btn" id="btn-extend">
+                                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-plus"></use></svg>
+                                            <span id="extend-label">Extend +3</span>
+                                        </button>
+                                        <button type="button" class="ctrl-btn end-btn" id="btn-end-call">
+                                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-close"></use></svg>
+                                            <span>End</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="call-status-strip" id="call-status-msg">
+                                Tap Vibe if you feel chemistry. Under 30s hang-up = 0 penalty.
+                            </div>
+                        </article>
+
+                        <!-- SCREEN 5: INSTANT MATCH OR WRAP (mutual_heart) -->
+                        <article class="screen-pane" id="screen-5" aria-label="Screen 5: Call Outcome and Mutual Match">
+                            <div class="screen-topbar">
+                                <h2 id="match-top-title">Call Complete</h2>
+                                <span class="badge-pill" id="match-top-badge">MUTUAL OPT-IN</span>
+                            </div>
+
+                            <div class="match-hero">
+                                <canvas id="match-canvas" width="16" height="16" aria-label="Match outcome pixel canvas"></canvas>
+                                <h3 id="match-headline">It's a match</h3>
+                                <p id="match-subcopy">You both tapped the heart — call ended, chat's open.</p>
+                                <div class="match-summary" id="match-summary-box">
+                                    <strong>Matched with Kabir, 28 · Bengaluru</strong><br>
+                                    <span>3m 00s verified call · Bonded over: "Most unpopular food opinion?"</span>
+                                </div>
+                            </div>
+
+                            <div style="display:flex;flex-direction:column;gap:8px">
+                                <button type="button" class="retro-cta gold" id="btn-open-chat">
+                                    <svg class="svg-icon" aria-hidden="true"><use href="#ic-chat"></use></svg>
+                                    <span>Send a message</span>
+                                </button>
+                                <button type="button" class="retro-cta ghost-btn" id="btn-requeue-from-match">
+                                    <span>Back to Live Hour Queue</span>
+                                </button>
+                            </div>
+                        </article>
+
+                        <!-- SCREEN 6: UNLOCKED CHAT & POST-CALL RATING (rate_call) -->
+                        <article class="screen-pane" id="screen-6" aria-label="Screen 6: Unlocked Chat and Call Rating">
+                            <div class="screen-topbar">
+                                <h2 id="chat-peer-header">Kabir, 28</h2>
+                                <span class="badge-pill">CHAT UNLOCKED</span>
+                            </div>
+
+                            <div class="rating-strip">
+                                <p>STEP 6 · RATE THE CALL (TRAINS MATCHING ENGINE)</p>
+                                <div class="rating-btns">
+                                    <button type="button" class="rate-chip active" data-rate="Great Vibe">Great Vibe</button>
+                                    <button type="button" class="rate-chip" data-rate="Good Talk">Good Talk</button>
+                                    <button type="button" class="rate-chip" data-rate="Mismatch">Mismatch</button>
+                                </div>
+                            </div>
+
+                            <div class="chat-log" id="chat-log" aria-live="polite">
+                                <div class="chat-msg them">
+                                    3-minute call flew by! Still laughing at your take on filter coffee vs masala chai.
+                                </div>
+                                <div class="chat-msg you">
+                                    Haha glad we skipped a week of dry texting! Indiranagar this Friday?
+                                </div>
+                            </div>
+
+                            <div class="quick-replies">
+                                <button type="button" class="quick-reply-btn" data-reply="Third Wave Coffee at 7 PM Friday?">Third Wave at 7 PM?</button>
+                                <button type="button" class="quick-reply-btn" data-reply="Wait, tell me your top 3 Bengaluru food spots!">Top 3 BLR food spots?</button>
+                            </div>
+
+                            <form class="chat-input-row" id="chat-form">
+                                <input type="text" class="chat-input" id="chat-input" placeholder="Plan the first date..." aria-label="Chat message">
+                                <button type="submit" class="arcade-btn-sm">SEND</button>
+                            </form>
+                        </article>
+
+                    </div>
+
+                    <!-- Phone Bottom Nav -->
+                    <nav class="phone-bottomnav" aria-label="App bottom navigation">
+                        <button type="button" class="nav-tab" data-goto="1">
+                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-lock"></use></svg>
+                            <span>DISCOVER</span>
+                        </button>
+                        <button type="button" class="nav-tab active" data-goto="3">
+                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-phone"></use></svg>
+                            <span>LIVE</span>
+                        </button>
+                        <button type="button" class="nav-tab" data-goto="4">
+                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-mic"></use></svg>
+                            <span>CALL</span>
+                        </button>
+                        <button type="button" class="nav-tab" data-goto="5">
+                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-heart"></use></svg>
+                            <span>MATCH</span>
+                        </button>
+                        <button type="button" class="nav-tab" data-goto="6">
+                            <svg class="svg-icon" aria-hidden="true"><use href="#ic-chat"></use></svg>
+                            <span>CHAT</span>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right Stage: PM Director's Console (ArchitectOS Terminal Style) -->
+        <aside class="director-console" aria-label="PM Director Console and Telemetry HUD">
+            <div class="console-titlebar">
+                <div class="win-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+                <span>sonder.poc // pm-director-console (synthetic demo)</span>
+                <button type="button" class="term-btn" id="btn-audio-toggle" style="padding:3px 8px;font-size:10px">AUDIO: ON</button>
+            </div>
+
+            <!-- 1. Persona & Supply Constraint Switcher -->
+            <div class="console-section">
+                <h2>Persona &amp; Supply Constraint (Slide 3)</h2>
+                <div class="cmd-grid" style="margin-bottom:8px">
+                    <button type="button" class="term-btn active" id="btn-persona-ananya">
+                        <span>ANANYA, 26 · BLR</span>
+                        <span>Priority &lt;25s</span>
+                    </button>
+                    <button type="button" class="term-btn" id="btn-persona-rohan">
+                        <span>ROHAN, 27 · MUM</span>
+                        <span>Wait ~40s</span>
+                    </button>
+                </div>
+                <div class="cmd-grid three">
+                    <button type="button" class="term-btn active" data-tier="free">
+                        <span>Free ₹0</span>
+                        <span>3/hr</span>
+                    </button>
+                    <button type="button" class="term-btn" data-tier="plus">
+                        <span>Plus ₹499</span>
+                        <span>Unlim</span>
+                    </button>
+                    <button type="button" class="term-btn" data-tier="priority">
+                        <span>Priority ₹799</span>
+                        <span>FastQ</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2. Simulated Partner Brain & Slide 6 Edge Cases -->
+            <div class="console-section">
+                <h2>Slide 6 Edge-Case Lab &amp; Partner Brain</h2>
+                <div class="cmd-grid" style="margin-bottom:8px">
+                    <button type="button" class="term-btn active" id="btn-partner-mutual">
+                        <span>Partner Heart: YES</span>
+                        <span>Mutual Match</span>
+                    </button>
+                    <button type="button" class="term-btn warn" id="btn-partner-onesided">
+                        <span>Partner Heart: NO</span>
+                        <span>1-Sided Hidden</span>
+                    </button>
+                </div>
+                <div class="cmd-grid">
+                    <button type="button" class="term-btn" id="edge-early-hangup">
+                        <span>&lt;30s Hang-Up</span>
+                        <span>0 Penalty + Refund</span>
+                    </button>
+                    <button type="button" class="term-btn" id="edge-queue-timeout">
+                        <span>&gt;90s Queue Wait</span>
+                        <span>Next Live Slot</span>
+                    </button>
+                    <button type="button" class="term-btn" id="edge-mutual-extend">
+                        <span>Mutual +3m Tap</span>
+                        <span>+180s Added</span>
+                    </button>
+                    <button type="button" class="term-btn danger" id="edge-abuse-report">
+                        <span>Abuse Mid-Call</span>
+                        <span>1-Tap End+Report</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3. Slide 8 North Star Metric Tree & Guardrails -->
+            <div class="console-section">
+                <h2>North Star &amp; Guardrails (Slide 8)</h2>
+                <div class="ns-formula tabular">
+                    <div class="ns-cell primary">
+                        <span class="ns-val" id="ns-total">1.44</span>
+                        <span class="ns-lbl">Mutual Hearts / Wk</span>
+                    </div>
+                    <div class="ns-cell">
+                        <span class="ns-val" id="ns-calls">6.0</span>
+                        <span class="ns-lbl">Calls / Caller</span>
+                    </div>
+                    <div class="ns-cell">
+                        <span class="ns-val" id="ns-comp">60%</span>
+                        <span class="ns-lbl">Completion</span>
+                    </div>
+                    <div class="ns-cell">
+                        <span class="ns-val" id="ns-rate">40%</span>
+                        <span class="ns-lbl">Mutual Heart %</span>
+                    </div>
+                </div>
+
+                <div class="guardrail-list tabular">
+                    <div class="gr-row">
+                        <span>Women's median wait (&lt;40s)</span>
+                        <span class="gr-val" id="gr-wait">18s PASS</span>
+                    </div>
+                    <div class="gr-row">
+                        <span>Reports / 1K calls (&lt;5)</span>
+                        <span class="gr-val" id="gr-reports">1.2 PASS</span>
+                    </div>
+                    <div class="gr-row">
+                        <span>Call completion (&gt;60%)</span>
+                        <span class="gr-val" id="gr-comp">64% PASS</span>
+                    </div>
+                    <div class="gr-row">
+                        <span>Verified share (100%)</span>
+                        <span class="gr-val">100% PASS</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Live Event Telemetry Stream -->
+            <div class="console-section">
+                <h2>
+                    <span>Live Event Stream (Slide 6 Spec)</span>
+                    <button type="button" class="term-btn" id="btn-clear-log" style="padding:2px 8px;font-size:10px">CLEAR</button>
+                </h2>
+                <div class="event-log tabular" id="event-log" aria-live="polite"></div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Non-Blocking In-Flow Arcade Control Dock -->
+    <footer class="arcade-dock" aria-label="Demo Keyboard Shortcuts and Case Links">
+        <div class="dock-inner">
+            <div class="dock-shortcuts" role="group" aria-label="Keyboard shortcuts">
+                <span class="dock-title">CONTROLS</span>
+                <button type="button" class="kbd-chip" data-shortcut="stage" title="Press 1-6 to jump stages">
+                    <kbd>1–6</kbd><span>Stages</span>
+                </button>
+                <button type="button" class="kbd-chip" data-shortcut="heart" title="Press H to toggle Vibe heart">
+                    <kbd>H</kbd><span>Vibe Heart</span>
+                </button>
+                <button type="button" class="kbd-chip" data-shortcut="ice" title="Press R to shuffle icebreaker">
+                    <kbd>R</kbd><span>New Prompt</span>
+                </button>
+                <button type="button" class="kbd-chip" data-shortcut="extend" title="Press E to extend call +3m">
+                    <kbd>E</kbd><span>Extend +3m</span>
+                </button>
+                <button type="button" class="kbd-chip" data-shortcut="mute" title="Press M to toggle mic mute">
+                    <kbd>M</kbd><span>Mute</span>
+                </button>
+            </div>
+
+            <div class="dock-meta">
+                <span class="dock-guardrail">ZERO-PII SYNTHETIC DEMO · DPDP ACT 2023 GUARDRAILS</span>
+                <a href="https://github.com/nidhishh/Sonder/blob/main/Sonder_v2.pdf" target="_blank" rel="noopener" class="dock-link">
+                    <span>READ SONDER_V2.PDF</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- DIALOG 1: Freemium Pricing Pause Menu (Slide 5 Spec) -->
+    <dialog class="retro-dialog" id="dialog-pricing" aria-label="Sonder Freemium Tiers">
+        <div class="dialog-bar">
+            <span>SONDER FREEMIUM // SLIDE 5 SPEC</span>
+            <button type="button" class="dialog-close" data-close-dialog="dialog-pricing">X</button>
+        </div>
+        <h2 style="font-family:'Fredoka',sans-serif;margin:0 0 8px;color:#ffe600">We sell a call in minutes, not more likes.</h2>
+        <p style="margin:0">Priced below Hinge+ (₹1,199/mo) because discovery happens on the call itself.</p>
+        <div class="tier-grid">
+            <div class="tier-box">
+                <div>
+                    <h3>Free · ₹0</h3>
+                    <ul>
+                        <li>3 calls / Live Hour</li>
+                        <li>100% ID + selfie verified</li>
+                        <li>Mutual heart unlocks chat</li>
+                    </ul>
+                </div>
+                <button type="button" class="arcade-btn-sm" data-select-tier="free">EQUIP FREE</button>
+            </div>
+            <div class="tier-box featured">
+                <div>
+                    <h3>Plus · ₹499/mo</h3>
+                    <ul>
+                        <li>Unlimited Live Hour calls</li>
+                        <li>+3 min mutual call extend</li>
+                        <li>Rematch window</li>
+                    </ul>
+                </div>
+                <button type="button" class="arcade-btn-sm" data-select-tier="plus">EQUIP PLUS</button>
+            </div>
+            <div class="tier-box">
+                <div>
+                    <h3>Priority · ₹799/mo</h3>
+                    <ul>
+                        <li>Priority queue (&lt;18s wait)</li>
+                        <li>See who tapped heart</li>
+                        <li>All Plus perks included</li>
+                    </ul>
+                </div>
+                <button type="button" class="arcade-btn-sm" data-select-tier="priority">EQUIP PRIORITY</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- DIALOG 2: Origin Story & Case Study Brief -->
+    <dialog class="retro-dialog" id="dialog-case" aria-label="Sonder Product Case Brief">
+        <div class="dialog-bar">
+            <span>ORIGIN STORY // SONDER V2 CASE SUMMARY</span>
+            <button type="button" class="dialog-close" data-close-dialog="dialog-case">X</button>
+        </div>
+        <h2 style="font-family:'Fredoka',sans-serif;margin:0 0 10px;color:#ffe600">Matches felt good. Texting for 5 days felt broken.</h2>
+        <p><strong>The Root Cause (5 Whys):</strong> 75% of Indian daters see fake/AI profiles, forcing ~5 days of cautious text screening where tone, humour, and timing vanish—so 2 in 3 never meet in person.</p>
+        <p><strong>Why Incumbents Won't Copy It:</strong> Tinder, Bumble, and Hinge monetize time in the swipe feed. Putting a 3-minute voice call <em>before</em> the match shrinks feed time, cannibalizing their core paywall.</p>
+        <p><strong>Bengaluru Beachhead Math:</strong> 2,000 verified callers concentrated into Thu–Sun 9–11 PM Live Hours = ~300 concurrent callers = ~30 compatible matches within 10 km = median wait under 40 seconds.</p>
+        <p><strong>Privacy &amp; DPDP Act 2023 Guardrail:</strong> No raw call audio recording and zero sensitive PII ingestion in this prototype.</p>
+    </dialog>
+
+    <!-- DIALOG 3: One-Tap Safety Report Modal -->
+    <dialog class="retro-dialog" id="dialog-report" aria-label="One-tap in-call safety report">
+        <div class="dialog-bar">
+            <span>SAFETY LAYER // ONE-TAP END &amp; REPORT</span>
+            <button type="button" class="dialog-close" data-close-dialog="dialog-report">X</button>
+        </div>
+        <h2 style="font-family:'Fredoka',sans-serif;margin:0 0 8px;color:#ff5c8a">End call &amp; flag caller immediately</h2>
+        <p style="margin:0 0 14px">Under DPDP Act 2023 guardrails, no raw audio is recorded. Consented, time-boxed session metadata is queued for safety review and triggers mandatory re-verification.</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+            <button type="button" class="retro-cta" data-submit-report="Voice/Profile mismatch (Liveness re-verify)">Flag: Voice or profile mismatch</button>
+            <button type="button" class="retro-cta" data-submit-report="Inappropriate conduct mid-call">Flag: Uncomfortable or rude behaviour</button>
+            <button type="button" class="retro-cta" data-submit-report="Spam or commercial solicitation">Flag: Spam or off-platform scam attempt</button>
+        </div>
+    </dialog>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
